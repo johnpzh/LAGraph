@@ -2438,6 +2438,9 @@ typedef enum
     LAGr_TriangleCount_Sandia_UU = 4,   ///< sum (sum ((U * U) .* U))
     LAGr_TriangleCount_Sandia_LUT = 5,  ///< sum (sum ((L * U') .* L))
     LAGr_TriangleCount_Sandia_ULT = 6,  ///< sum (sum ((U * L') .* U))
+
+    /// Added by Zhen Peng on 12/5/2022
+    LAGr_TriangleCount_Burkhardt_Literal = 7, ///< sum (sum ((A^2) .* A)) / 6, no masking, elementwise multiplication
 }
 LAGr_TriangleCount_Method ;
 
@@ -2501,6 +2504,30 @@ int LAGr_TriangleCount
     LAGr_TriangleCount_Method *method,
     LAGr_TriangleCount_Presort *presort,
     char *msg
+) ;
+
+/// Added by Zhen Peng on 12/28/2022
+
+typedef enum
+{
+  LAGr_MaskedSpGEMM_AutoMethod = 0,  ///< auto selection of method
+  LAGr_MaskedSpGEMM_NoMask = 1,   ///< sum (sum ((A^2) .* A)) / 6
+  LAGr_MaskedSpGEMM_AllZeroMask = 2,       ///< sum (sum ((L * U) .* A)) / 2
+  LAGr_MaskedSpGEMM_UseMask = 3,   ///< sum (sum ((L * L) .* L))
+}
+    LAGr_MaskedSpGEMM_Method ;
+
+LAGRAPH_PUBLIC
+int LAGr_MaskedSpGEMM
+    (
+        // output:
+        uint64_t *ntriangles,
+        // input:
+        const LAGraph_Graph G,
+        const LAGraph_Graph M, // Mask
+        LAGr_MaskedSpGEMM_Method *method,
+//    LAGr_TriangleCount_Presort *presort,
+        char *msg
 ) ;
 
 #endif

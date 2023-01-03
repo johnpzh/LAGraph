@@ -48,7 +48,7 @@
 
 #include <GraphBLAS.h>
 #if defined ( _OPENMP )
-    #include <omp.h>
+#include <omp.h>
 #endif
 
 // LAGRAPH_MIN/MAX: suitable for integers, and non-NaN floating point
@@ -63,11 +63,11 @@
 // SuiteSparse:GraphBLAS GxB extensions.
 
 #if ( GRB_VERSION < 2 )
-    #error "The GraphBLAS library must support the v2.0 C API Specification"
+#error "The GraphBLAS library must support the v2.0 C API Specification"
 #endif
 
 #if ( _MSC_VER && !__INTEL_COMPILER )
-    #ifdef LG_LIBRARY
+#ifdef LG_LIBRARY
         // compiling LAGraph itself, exporting symbols to user apps
         #define LAGRAPH_PUBLIC extern __declspec ( dllexport )
     #else
@@ -75,32 +75,32 @@
         #define LAGRAPH_PUBLIC extern __declspec ( dllimport )
     #endif
 #else
-    // for other compilers
-    #define LAGRAPH_PUBLIC extern
+// for other compilers
+#define LAGRAPH_PUBLIC extern
 #endif
 
 #if defined ( __cplusplus )
-    // C++ does not have the restrict keyword
+// C++ does not have the restrict keyword
     #define LAGRAPH_RESTRICT
 #elif ( _MSC_VER && !__INTEL_COMPILER )
-    // Microsoft Visual Studio uses __restrict instead of restrict for C
+// Microsoft Visual Studio uses __restrict instead of restrict for C
     #define LAGRAPH_RESTRICT __restrict
 #else
-    // use the restrict keyword for ANSI C99 compilers
-    #define LAGRAPH_RESTRICT restrict
+// use the restrict keyword for ANSI C99 compilers
+#define LAGRAPH_RESTRICT restrict
 #endif
 
 // vanilla vs SuiteSparse:
 #if !defined ( LAGRAPH_VANILLA )
-    // by default, set LAGRAPH_VANILLA to false
-    #define LAGRAPH_VANILLA 0
+// by default, set LAGRAPH_VANILLA to false
+#define LAGRAPH_VANILLA 0
 #endif
 
 #if ( !LAGRAPH_VANILLA ) && defined ( GxB_SUITESPARSE_GRAPHBLAS )
-    // use SuiteSparse, and its GxB* extensions
-    #define LAGRAPH_SUITESPARSE 1
+// use SuiteSparse, and its GxB* extensions
+#define LAGRAPH_SUITESPARSE 1
 #else
-    // use any GraphBLAS library (possibly SuiteSparse) but with no GxB*
+// use any GraphBLAS library (possibly SuiteSparse) but with no GxB*
     #define LAGRAPH_SUITESPARSE 0
 #endif
 
@@ -401,14 +401,14 @@ LAGRAPH_PUBLIC void   (* LAGraph_Free_function    ) (void *)         ;
 
 LAGRAPH_PUBLIC
 int LAGraph_Malloc
-(
-    // output:
-    void **p,               // pointer to allocated block of memory
-    // input:
-    size_t nitems,          // number of items
-    size_t size_of_item,    // size of each item
-    char *msg
-) ;
+    (
+        // output:
+        void **p,               // pointer to allocated block of memory
+        // input:
+        size_t nitems,          // number of items
+        size_t size_of_item,    // size of each item
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Calloc:  allocate a block of memory (wrapper for calloc)
@@ -431,14 +431,14 @@ int LAGraph_Malloc
 
 LAGRAPH_PUBLIC
 int LAGraph_Calloc
-(
-    // output:
-    void **p,               // pointer to allocated block of memory
-    // input:
-    size_t nitems,          // number of items
-    size_t size_of_item,    // size of each item
-    char *msg
-) ;
+    (
+        // output:
+        void **p,               // pointer to allocated block of memory
+        // input:
+        size_t nitems,          // number of items
+        size_t size_of_item,    // size of each item
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Realloc: reallocate a block of memory (wrapper for realloc)
@@ -468,15 +468,15 @@ int LAGraph_Calloc
 
 LAGRAPH_PUBLIC
 int LAGraph_Realloc
-(
-    // input/output:
-    void **p,               // old block to reallocate
-    // input:
-    size_t nitems_new,      // new number of items in the object
-    size_t nitems_old,      // old number of items in the object
-    size_t size_of_item,    // size of each item
-    char *msg
-) ;
+    (
+        // input/output:
+        void **p,               // old block to reallocate
+        // input:
+        size_t nitems_new,      // new number of items in the object
+        size_t nitems_old,      // old number of items in the object
+        size_t size_of_item,    // size of each item
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Free:  free a block of memory (wrapper for free)
@@ -497,11 +497,11 @@ int LAGraph_Realloc
 
 LAGRAPH_PUBLIC
 int LAGraph_Free            // free a block of memory and set p to NULL
-(
-    // input/output:
-    void **p,               // pointer to object to free, does nothing if NULL
-    char *msg
-) ;
+    (
+        // input/output:
+        void **p,               // pointer to object to free, does nothing if NULL
+        char *msg
+    ) ;
 
 //==============================================================================
 // LAGraph data structures
@@ -528,31 +528,31 @@ int LAGraph_Free            // free a block of memory and set p to NULL
 
 typedef enum
 {
-    LAGraph_ADJACENCY_UNDIRECTED = 0, ///< undirected graph.
-        ///< G->A is square and symmetric; both upper and lower triangular parts
-        ///< are present.  A(i,j) is the edge (i,j).  Results are undefined if
-        ///< A is unsymmetric.
+  LAGraph_ADJACENCY_UNDIRECTED = 0, ///< undirected graph.
+  ///< G->A is square and symmetric; both upper and lower triangular parts
+  ///< are present.  A(i,j) is the edge (i,j).  Results are undefined if
+  ///< A is unsymmetric.
 
-    LAGraph_ADJACENCY_DIRECTED = 1,   ///< directed graph.
-        ///< G->A is square; A(i,j) is the edge (i,j).
+  LAGraph_ADJACENCY_DIRECTED = 1,   ///< directed graph.
+  ///< G->A is square; A(i,j) is the edge (i,j).
 
-    // possible future kinds of graphs:
-    // LAGraph_ADJACENCY_UNDIRECTED_UNWEIGHTED
-    // LAGraph_ADJACENCY_DIRECTED_UNWEIGHTED
-    // LAGraph_ADJACENCY_UNDIRECTED_TRIL
-    // LAGraph_ADJACENCY_UNDIRECTED_TRIU
-    // LAGraph_BIPARTITE
-    // LAGraph_BIPARTITE_DIRECTED
-    // LAGraph_BIPARTITE_UNDIRECTED
-    // LAGraph_INCIDENCE_*
-    // LAGraph_MULTIGRAPH_*
-    // LAGraph_HYPERGRAPH
-    // LAGraph_HYPERGRAPH_DIRECTED
-    // ...
+  // possible future kinds of graphs:
+  // LAGraph_ADJACENCY_UNDIRECTED_UNWEIGHTED
+  // LAGraph_ADJACENCY_DIRECTED_UNWEIGHTED
+  // LAGraph_ADJACENCY_UNDIRECTED_TRIL
+  // LAGraph_ADJACENCY_UNDIRECTED_TRIU
+  // LAGraph_BIPARTITE
+  // LAGraph_BIPARTITE_DIRECTED
+  // LAGraph_BIPARTITE_UNDIRECTED
+  // LAGraph_INCIDENCE_*
+  // LAGraph_MULTIGRAPH_*
+  // LAGraph_HYPERGRAPH
+  // LAGraph_HYPERGRAPH_DIRECTED
+  // ...
 
-    LAGraph_KIND_UNKNOWN = LAGRAPH_UNKNOWN  ///< unknown kind of graph (-1).
+  LAGraph_KIND_UNKNOWN = LAGRAPH_UNKNOWN  ///< unknown kind of graph (-1).
 }
-LAGraph_Kind ;
+    LAGraph_Kind ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Boolean: true, false, or unknown
@@ -563,11 +563,11 @@ LAGraph_Kind ;
 
 typedef enum
 {
-    LAGraph_FALSE = 0,      ///< the Boolean value is known to be false.
-    LAGraph_TRUE = 1,       ///< the Boolean value is known to be true.
-    LAGraph_BOOLEAN_UNKNOWN = LAGRAPH_UNKNOWN   ///< Boolean value is unknown.
+  LAGraph_FALSE = 0,      ///< the Boolean value is known to be false.
+  LAGraph_TRUE = 1,       ///< the Boolean value is known to be true.
+  LAGraph_BOOLEAN_UNKNOWN = LAGRAPH_UNKNOWN   ///< Boolean value is unknown.
 }
-LAGraph_Boolean ;
+    LAGraph_Boolean ;
 
 //------------------------------------------------------------------------------
 // LAGraph_State: value, bound, or unknown
@@ -587,13 +587,13 @@ LAGraph_Boolean ;
 
 typedef enum
 {
-    LAGraph_VALUE = 0,  ///< cached property is a known value.
-    LAGraph_BOUND = 1,  ///< cached property is a bound.
-        ///< The bound is upper or lower, depending on the particular cached
-        ///< property.
-    LAGraph_STATE_UNKNOWN = LAGRAPH_UNKNOWN,    ///< the property is unknown.
+  LAGraph_VALUE = 0,  ///< cached property is a known value.
+  LAGraph_BOUND = 1,  ///< cached property is a bound.
+  ///< The bound is upper or lower, depending on the particular cached
+  ///< property.
+  LAGraph_STATE_UNKNOWN = LAGRAPH_UNKNOWN,    ///< the property is unknown.
 }
-LAGraph_State ;
+    LAGraph_State ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Graph: the primary graph data structure of LAGraph
@@ -626,108 +626,108 @@ LAGraph_State ;
 struct LAGraph_Graph_struct
 {
 
-    //--------------------------------------------------------------------------
-    // primary components of the graph
-    //--------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
+  // primary components of the graph
+  //--------------------------------------------------------------------------
 
-    /** @name Primary Components */
-    //@{
+  /** @name Primary Components */
+  //@{
 
-    GrB_Matrix  A ;         ///< the adjacency matrix of the graph
-    LAGraph_Kind kind ;     ///< the kind of graph
+  GrB_Matrix  A ;         ///< the adjacency matrix of the graph
+  LAGraph_Kind kind ;     ///< the kind of graph
 
-    //@}
+  //@}
 
-    // possible future components:
-    // multigraph ..
-    // GrB_Matrix *Amult ; // array of size nmatrices
-    // int nmatrices ;
-    // GrB_Vector NodeWeights ;
+  // possible future components:
+  // multigraph ..
+  // GrB_Matrix *Amult ; // array of size nmatrices
+  // int nmatrices ;
+  // GrB_Vector NodeWeights ;
 
-    //--------------------------------------------------------------------------
-    // cached properties of the graph
-    //--------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
+  // cached properties of the graph
+  //--------------------------------------------------------------------------
 
-    /** @name Cached Properties
-     *
-     * All of these components may be deleted or set to 'unknown' at any time.
-     * For example, if AT is NULL, then the transpose of A has not been
-     * computed.  A scalar cached property of type LAGraph_Boolean would be set
-     * to LAGRAPH_UNKNOWN to denote that its value is unknown.
-     *
-     * If present, the cached properties must be valid and accurate.  If the
-     * graph changes, these cached properties can either be recomputed or
-     * deleted to denote the fact that they are unknown.  This choice is up to
-     * individual LAGraph methods and utilities.
-     *
-     * LAGraph methods can set non-scalar cached properties only if they are
-     * constructing the graph.  They cannot modify them or create them if the
-     * graph is declared as a read-only object in the parameter list of the
-     * method.
-     */
+  /** @name Cached Properties
+   *
+   * All of these components may be deleted or set to 'unknown' at any time.
+   * For example, if AT is NULL, then the transpose of A has not been
+   * computed.  A scalar cached property of type LAGraph_Boolean would be set
+   * to LAGRAPH_UNKNOWN to denote that its value is unknown.
+   *
+   * If present, the cached properties must be valid and accurate.  If the
+   * graph changes, these cached properties can either be recomputed or
+   * deleted to denote the fact that they are unknown.  This choice is up to
+   * individual LAGraph methods and utilities.
+   *
+   * LAGraph methods can set non-scalar cached properties only if they are
+   * constructing the graph.  They cannot modify them or create them if the
+   * graph is declared as a read-only object in the parameter list of the
+   * method.
+   */
 
-    //@{
+  //@{
 
-    GrB_Matrix AT ; ///< AT = A', the transpose of A, with the same type.
+  GrB_Matrix AT ; ///< AT = A', the transpose of A, with the same type.
 
-    GrB_Vector out_degree ; ///< a GrB_INT64 vector of length m, if A is m-by-n.
-           ///< where out_degree(i) is the number of entries in A(i,:).  If
-           ///< out_degree is sparse and the entry out_degree(i) is not present,
-           ///< then it is assumed to be zero.
+  GrB_Vector out_degree ; ///< a GrB_INT64 vector of length m, if A is m-by-n.
+  ///< where out_degree(i) is the number of entries in A(i,:).  If
+  ///< out_degree is sparse and the entry out_degree(i) is not present,
+  ///< then it is assumed to be zero.
 
-    GrB_Vector in_degree ;  ///< a GrB_INT64 vector of length n, if A is m-by-n.
-            ///< where in_degree(j) is the number of entries in A(:,j).  If
-            ///< in_degree is sparse and the entry in_degree(j) is not present,
-            ///< then it is assumed to be zero.  If A is known to have a
-            ///< symmetric structure, the convention is that the degree is held
-            ///< in G->out_degree, and in G->in_degree is left as NULL.
+  GrB_Vector in_degree ;  ///< a GrB_INT64 vector of length n, if A is m-by-n.
+  ///< where in_degree(j) is the number of entries in A(:,j).  If
+  ///< in_degree is sparse and the entry in_degree(j) is not present,
+  ///< then it is assumed to be zero.  If A is known to have a
+  ///< symmetric structure, the convention is that the degree is held
+  ///< in G->out_degree, and in G->in_degree is left as NULL.
 
-    // FUTURE: If G is held as an incidence matrix, then G->A might be
-    // rectangular, in the future, but the graph G may have a symmetric
-    // structure anyway.
+  // FUTURE: If G is held as an incidence matrix, then G->A might be
+  // rectangular, in the future, but the graph G may have a symmetric
+  // structure anyway.
 
-    LAGraph_Boolean is_symmetric_structure ;    ///< For an undirected
-            ///< graph, this cached property will always be implicitly true and
-            ///< can be ignored.  The matrix A for a directed weighted graph
-            ///< will typically be unsymmetric, but might have a symmetric
-            ///< structure.  In that case, this scalar cached property can be
-            ///< set to true. By default, this cached property is set to
-            ///< LAGRAPH_UNKNOWN.
+  LAGraph_Boolean is_symmetric_structure ;    ///< For an undirected
+  ///< graph, this cached property will always be implicitly true and
+  ///< can be ignored.  The matrix A for a directed weighted graph
+  ///< will typically be unsymmetric, but might have a symmetric
+  ///< structure.  In that case, this scalar cached property can be
+  ///< set to true. By default, this cached property is set to
+  ///< LAGRAPH_UNKNOWN.
 
-    int64_t nself_edges ; ///< number of entries on the diagonal of A, or
-            ///< LAGRAPH_UNKNOWN if unknown.  For the adjacency matrix of a
-            ///< directed or undirected graph, this is the number of self-edges
-            ///< in the graph.
+  int64_t nself_edges ; ///< number of entries on the diagonal of A, or
+  ///< LAGRAPH_UNKNOWN if unknown.  For the adjacency matrix of a
+  ///< directed or undirected graph, this is the number of self-edges
+  ///< in the graph.
 
-    GrB_Scalar emin ;   ///< minimum edge weight: value, lower bound, or unknown
-    LAGraph_State emin_state ;
-            ///< - VALUE: emin is equal to the smallest entry, min(G->A)
-            ///< - BOUND: emin <= min(G->A)
-            ///< - UNKNOWN: emin is unknown
+  GrB_Scalar emin ;   ///< minimum edge weight: value, lower bound, or unknown
+  LAGraph_State emin_state ;
+  ///< - VALUE: emin is equal to the smallest entry, min(G->A)
+  ///< - BOUND: emin <= min(G->A)
+  ///< - UNKNOWN: emin is unknown
 
-    GrB_Scalar emax ;   ///< maximum edge weight: value, upper bound, or unknown
-    LAGraph_State emax_state ;
-            ///< - VALUE: emax is equal to the largest entry, max(G->A)
-            ///< - BOUND: emax >= max(G->A)
-            ///< - UNKNOWN: emax is unknown
+  GrB_Scalar emax ;   ///< maximum edge weight: value, upper bound, or unknown
+  LAGraph_State emax_state ;
+  ///< - VALUE: emax is equal to the largest entry, max(G->A)
+  ///< - BOUND: emax >= max(G->A)
+  ///< - UNKNOWN: emax is unknown
 
-    //@}
+  //@}
 
-    // FUTURE: possible future cached properties:
-    // Some algorithms may want to know if the graph has any edge weights
-    // exactly equal to zero.  In some cases, this can be inferred from the
-    // emin/emax bounds, or it can be indicated via the following cached
-    // property:
-    // LAGraph_Boolean nonzero ;  // If true, then all entries in
-            // G->A are known to be nonzero.  If false, G->A may contain
-            // entries in its structure that are identically equal to zero.  If
-            // unknown, then G->A may or may not have entries equal to zero.
-    // other edge weight metrics: median, standard deviation....  Might be
-    // useful for computing Delta for a Basic SSSP.
-    // GrB_Vector row_sum, col_sum ;
-    // row_sum(i) = sum(abs(A(i,:))), regardless of kind
-    // col_sum(j) = sum(abs(A(:,j))), regardless of kind
-    // LAGraph_Boolean connected ;   // true if G is a connected graph
+  // FUTURE: possible future cached properties:
+  // Some algorithms may want to know if the graph has any edge weights
+  // exactly equal to zero.  In some cases, this can be inferred from the
+  // emin/emax bounds, or it can be indicated via the following cached
+  // property:
+  // LAGraph_Boolean nonzero ;  // If true, then all entries in
+  // G->A are known to be nonzero.  If false, G->A may contain
+  // entries in its structure that are identically equal to zero.  If
+  // unknown, then G->A may or may not have entries equal to zero.
+  // other edge weight metrics: median, standard deviation....  Might be
+  // useful for computing Delta for a Basic SSSP.
+  // GrB_Vector row_sum, col_sum ;
+  // row_sum(i) = sum(abs(A(i,:))), regardless of kind
+  // col_sum(j) = sum(abs(A(:,j))), regardless of kind
+  // LAGraph_Boolean connected ;   // true if G is a connected graph
 } ;
 
 typedef struct LAGraph_Graph_struct *LAGraph_Graph ;
@@ -756,18 +756,18 @@ typedef struct LAGraph_Graph_struct *LAGraph_Graph ;
 
 LAGRAPH_PUBLIC
 int LAGraph_Init
-(
-    char *msg
-) ;
+    (
+        char *msg
+    ) ;
 
 // FUTURE: include these as built-in semirings in v2.1 C API, Table 3.9:
 
 // LAGraph semirings, created by LAGraph_Init or LAGr_Init:
 LAGRAPH_PUBLIC GrB_Semiring
 
-    // LAGraph_plus_first_T: using the GrB_PLUS_MONOID_T monoid and the
-    // corresponding GrB_FIRST_T multiplicative operator.
-    LAGraph_plus_first_int8   ,
+// LAGraph_plus_first_T: using the GrB_PLUS_MONOID_T monoid and the
+// corresponding GrB_FIRST_T multiplicative operator.
+LAGraph_plus_first_int8   ,
     LAGraph_plus_first_int16  ,
     LAGraph_plus_first_int32  ,
     LAGraph_plus_first_int64  ,
@@ -778,9 +778,9 @@ LAGRAPH_PUBLIC GrB_Semiring
     LAGraph_plus_first_fp32   ,
     LAGraph_plus_first_fp64   ,
 
-    // LAGraph_plus_second_T: using the GrB_PLUS_MONOID_T monoid and the
-    // corresponding GrB_SECOND_T multiplicative operator.
-    LAGraph_plus_second_int8   ,
+// LAGraph_plus_second_T: using the GrB_PLUS_MONOID_T monoid and the
+// corresponding GrB_SECOND_T multiplicative operator.
+LAGraph_plus_second_int8   ,
     LAGraph_plus_second_int16  ,
     LAGraph_plus_second_int32  ,
     LAGraph_plus_second_int64  ,
@@ -791,9 +791,9 @@ LAGRAPH_PUBLIC GrB_Semiring
     LAGraph_plus_second_fp32   ,
     LAGraph_plus_second_fp64   ,
 
-    // LAGraph_plus_one_T: using the GrB_PLUS_MONOID_T monoid and the
-    // corresponding GrB_ONEB_T multiplicative operator.
-    LAGraph_plus_one_int8   ,
+// LAGraph_plus_one_T: using the GrB_PLUS_MONOID_T monoid and the
+// corresponding GrB_ONEB_T multiplicative operator.
+LAGraph_plus_one_int8   ,
     LAGraph_plus_one_int16  ,
     LAGraph_plus_one_int32  ,
     LAGraph_plus_one_int64  ,
@@ -804,13 +804,13 @@ LAGRAPH_PUBLIC GrB_Semiring
     LAGraph_plus_one_fp32   ,
     LAGraph_plus_one_fp64   ,
 
-    // LAGraph_any_one_T: using the GrB_MIN_MONOID_T for non-boolean types or
-    // GrB_LOR_MONOID_BOOL for boolean, and the GrB_ONEB_T multiplicative op.
-    // These semirings are very useful for unweighted graphs, or for algorithms
-    // that operate only on the sparsity structure of unweighted graphs.
-    LAGraph_any_one_bool   ,    // (or, true) semiring
-    LAGraph_any_one_int8   ,    // (min, 1) semiring
-    LAGraph_any_one_int16  ,
+// LAGraph_any_one_T: using the GrB_MIN_MONOID_T for non-boolean types or
+// GrB_LOR_MONOID_BOOL for boolean, and the GrB_ONEB_T multiplicative op.
+// These semirings are very useful for unweighted graphs, or for algorithms
+// that operate only on the sparsity structure of unweighted graphs.
+LAGraph_any_one_bool   ,    // (or, true) semiring
+LAGraph_any_one_int8   ,    // (min, 1) semiring
+LAGraph_any_one_int16  ,
     LAGraph_any_one_int32  ,
     LAGraph_any_one_int64  ,
     LAGraph_any_one_uint8  ,
@@ -851,12 +851,12 @@ LAGRAPH_PUBLIC GrB_Semiring
 
 LAGRAPH_PUBLIC
 int LAGraph_Version
-(
-    // output:
-    int version_number [3], // user-provided array of size 3
-    char *version_date,     // user-provided array of size >= LAGRAPH_MSG_LEN
-    char *msg
-) ;
+    (
+        // output:
+        int version_number [3], // user-provided array of size 3
+        char *version_date,     // user-provided array of size >= LAGRAPH_MSG_LEN
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Finalize: finish LAGraph
@@ -875,9 +875,9 @@ int LAGraph_Version
 
 LAGRAPH_PUBLIC
 int LAGraph_Finalize
-(
-    char *msg
-) ;
+    (
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_New: create a new graph
@@ -905,15 +905,15 @@ int LAGraph_Finalize
 
 LAGRAPH_PUBLIC
 int LAGraph_New
-(
-    // output:
-    LAGraph_Graph *G,   // the graph to create, NULL if failure
-    // input/output:
-    GrB_Matrix    *A,   // the adjacency matrix of the graph, may be NULL.
-    // input:
-    LAGraph_Kind kind,  // the kind of graph.
-    char *msg
-) ;
+    (
+        // output:
+        LAGraph_Graph *G,   // the graph to create, NULL if failure
+        // input/output:
+        GrB_Matrix    *A,   // the adjacency matrix of the graph, may be NULL.
+        // input:
+        LAGraph_Kind kind,  // the kind of graph.
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Delete: free a graph and all its contents
@@ -933,11 +933,11 @@ int LAGraph_New
 
 LAGRAPH_PUBLIC
 int LAGraph_Delete
-(
-    // input/output:
-    LAGraph_Graph *G,   // the graph to delete; G set to NULL on output.
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph *G,   // the graph to delete; G set to NULL on output.
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_DeleteCached: free any internal cached properties of a graph
@@ -958,11 +958,11 @@ int LAGraph_Delete
 
 LAGRAPH_PUBLIC
 int LAGraph_DeleteCached
-(
-    // input/output:
-    LAGraph_Graph G,    // G stays valid, only cached properties are freed
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // G stays valid, only cached properties are freed
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Cached_AT: construct G->AT for a graph
@@ -988,11 +988,11 @@ int LAGraph_DeleteCached
 
 LAGRAPH_PUBLIC
 int LAGraph_Cached_AT
-(
-    // input/output:
-    LAGraph_Graph G,    // graph for which to compute G->AT
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // graph for which to compute G->AT
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Cached_IsSymmetricStructure: determine G->is_symmetric_structure
@@ -1017,11 +1017,11 @@ int LAGraph_Cached_AT
 
 LAGRAPH_PUBLIC
 int LAGraph_Cached_IsSymmetricStructure
-(
-    // input/output:
-    LAGraph_Graph G,    // graph to determine the symmetry of structure of A
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // graph to determine the symmetry of structure of A
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Cached_OutDegree: determine G->out_degree
@@ -1042,11 +1042,11 @@ int LAGraph_Cached_IsSymmetricStructure
 
 LAGRAPH_PUBLIC
 int LAGraph_Cached_OutDegree
-(
-    // input/output:
-    LAGraph_Graph G,    // graph to determine G->out_degree
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // graph to determine G->out_degree
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Cached_InDegree: determine G->in_degree
@@ -1076,11 +1076,11 @@ int LAGraph_Cached_OutDegree
 
 LAGRAPH_PUBLIC
 int LAGraph_Cached_InDegree
-(
-    // input/output:
-    LAGraph_Graph G,    // graph to determine G->in_degree
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // graph to determine G->in_degree
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Cached_NSelfEdges: determine G->nself_edges
@@ -1103,11 +1103,11 @@ int LAGraph_Cached_InDegree
 
 LAGRAPH_PUBLIC
 int LAGraph_Cached_NSelfEdges
-(
-    // input/output:
-    LAGraph_Graph G,    // graph to compute G->nself_edges
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // graph to compute G->nself_edges
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Cached_EMin: determine G->emin
@@ -1131,11 +1131,11 @@ int LAGraph_Cached_NSelfEdges
 
 LAGRAPH_PUBLIC
 int LAGraph_Cached_EMin
-(
-    // input/output:
-    LAGraph_Graph G,    // graph to determine G->emin
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // graph to determine G->emin
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Cached_EMax: determine G->emax
@@ -1159,11 +1159,11 @@ int LAGraph_Cached_EMin
 
 LAGRAPH_PUBLIC
 int LAGraph_Cached_EMax
-(
-    // input/output:
-    LAGraph_Graph G,    // graph to determine G->emax
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // graph to determine G->emax
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_DeleteSelfEdges: remove all diagonal entries from G->A
@@ -1185,12 +1185,12 @@ int LAGraph_Cached_EMax
 
 LAGRAPH_PUBLIC
 int LAGraph_DeleteSelfEdges
-(
-    // input/output:
-    LAGraph_Graph G,    // diagonal entries removed, most cached properties
-                        // cleared
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // diagonal entries removed, most cached properties
+        // cleared
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_CheckGraph: determine if a graph is valid
@@ -1213,11 +1213,11 @@ int LAGraph_DeleteSelfEdges
 
 LAGRAPH_PUBLIC
 int LAGraph_CheckGraph
-(
-    // input/output:
-    LAGraph_Graph G,    // graph to check
-    char *msg
-) ;
+    (
+        // input/output:
+        LAGraph_Graph G,    // graph to check
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_GetNumThreads: determine # of OpenMP threads to use
@@ -1238,13 +1238,13 @@ int LAGraph_CheckGraph
 
 LAGRAPH_PUBLIC
 int LAGraph_GetNumThreads
-(
-    // output:
-    int *nthreads_outer,    // for outer region for nested parallelism
-    int *nthreads_inner,    // for inner region of nested parallelism, or for
-                            // the underlying GraphBLAS library
-    char *msg
-) ;
+    (
+        // output:
+        int *nthreads_outer,    // for outer region for nested parallelism
+        int *nthreads_inner,    // for inner region of nested parallelism, or for
+        // the underlying GraphBLAS library
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_SetNumThreads: set # of OpenMP threads to use
@@ -1272,12 +1272,12 @@ int LAGraph_GetNumThreads
 
 LAGRAPH_PUBLIC
 int LAGraph_SetNumThreads
-(
-    // input:
-    int nthreads_outer,
-    int nthreads_inner,
-    char *msg
-) ;
+    (
+        // input:
+        int nthreads_outer,
+        int nthreads_inner,
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_WallClockTime: return the current wall clock time
@@ -1295,9 +1295,9 @@ int LAGraph_SetNumThreads
 
 LAGRAPH_PUBLIC
 double LAGraph_WallClockTime     // returns omp_get_wtime(), or other timer
-(
-    void
-) ;
+    (
+        void
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_MMRead: read a matrix in MatrixMarket format
@@ -1478,13 +1478,13 @@ double LAGraph_WallClockTime     // returns omp_get_wtime(), or other timer
 
 LAGRAPH_PUBLIC
 int LAGraph_MMRead
-(
-    // output:
-    GrB_Matrix *A,  // handle of matrix to create
-    // input:
-    FILE *f,        // file to read from, already open
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Matrix *A,  // handle of matrix to create
+        // input:
+        FILE *f,        // file to read from, already open
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_MMWrite: write a matrix in MatrixMarket format
@@ -1516,13 +1516,13 @@ int LAGraph_MMRead
 
 LAGRAPH_PUBLIC
 int LAGraph_MMWrite
-(
-    // input:
-    GrB_Matrix A,       // matrix to write to the file
-    FILE *f,            // file to write it to, must be already open
-    FILE *fcomments,    // optional file with extra comments, may be NULL
-    char *msg
-) ;
+    (
+        // input:
+        GrB_Matrix A,       // matrix to write to the file
+        FILE *f,            // file to write it to, must be already open
+        FILE *fcomments,    // optional file with extra comments, may be NULL
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Matrix_Structure: return the structure of a matrix
@@ -1545,13 +1545,13 @@ int LAGraph_MMWrite
 
 LAGRAPH_PUBLIC
 int LAGraph_Matrix_Structure
-(
-    // output:
-    GrB_Matrix *C,      // the structure of A
-    // input:
-    GrB_Matrix A,
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Matrix *C,      // the structure of A
+        // input:
+        GrB_Matrix A,
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Vector_Structure: return the structure of a vector
@@ -1574,13 +1574,13 @@ int LAGraph_Matrix_Structure
 
 LAGRAPH_PUBLIC
 int LAGraph_Vector_Structure
-(
-    // output:
-    GrB_Vector *w,  // the structure of u
-    // input:
-    GrB_Vector u,
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Vector *w,  // the structure of u
+        // input:
+        GrB_Vector u,
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_NameOfType: return the name of a type
@@ -1602,13 +1602,13 @@ int LAGraph_Vector_Structure
 
 LAGRAPH_PUBLIC
 int LAGraph_NameOfType
-(
-    // output:
-    char *name,     // name of type: user array of size LAGRAPH_MAX_NAME_LEN
-    // input:
-    GrB_Type type,  // GraphBLAS type
-    char *msg
-) ;
+    (
+        // output:
+        char *name,     // name of type: user array of size LAGRAPH_MAX_NAME_LEN
+        // input:
+        GrB_Type type,  // GraphBLAS type
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_TypeFromName: return a GrB_Type from its name
@@ -1628,13 +1628,13 @@ int LAGraph_NameOfType
 
 LAGRAPH_PUBLIC
 int LAGraph_TypeFromName
-(
-    // output:
-    GrB_Type *type, // GraphBLAS type
-    // input:
-    char *name,     // name of the type: a null-terminated string
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Type *type, // GraphBLAS type
+        // input:
+        char *name,     // name of the type: a null-terminated string
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_SizeOfType: return sizeof(...) of a GraphBLAS GrB_Type
@@ -1655,13 +1655,13 @@ int LAGraph_TypeFromName
 
 LAGRAPH_PUBLIC
 int LAGraph_SizeOfType
-(
-    // output:
-    size_t *size,   // size of the type
-    // input:
-    GrB_Type type,  // GraphBLAS type
-    char *msg
-) ;
+    (
+        // output:
+        size_t *size,   // size of the type
+        // input:
+        GrB_Type type,  // GraphBLAS type
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Matrix_TypeName: return the name of the GrB_Type of a GrB_Matrix
@@ -1681,14 +1681,14 @@ int LAGraph_SizeOfType
 
 LAGRAPH_PUBLIC
 int LAGraph_Matrix_TypeName
-(
-    // output:
-    char *name,     // name of the type of the matrix A (user-provided array
-                    // of size at least LAGRAPH_MAX_NAME_LEN).
-    // input:
-    GrB_Matrix A,   // matrix to query
-    char *msg
-) ;
+    (
+        // output:
+        char *name,     // name of the type of the matrix A (user-provided array
+        // of size at least LAGRAPH_MAX_NAME_LEN).
+        // input:
+        GrB_Matrix A,   // matrix to query
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Vector_TypeName: return the name of the GrB_Type of a GrB_Vector
@@ -1708,14 +1708,14 @@ int LAGraph_Matrix_TypeName
 
 LAGRAPH_PUBLIC
 int LAGraph_Vector_TypeName
-(
-    // output:
-    char *name,     // name of the type of the vector v (user-provided array
-                    // of size at least LAGRAPH_MAX_NAME_LEN).
-    // input:
-    GrB_Vector v,   // vector to query
-    char *msg
-) ;
+    (
+        // output:
+        char *name,     // name of the type of the vector v (user-provided array
+        // of size at least LAGRAPH_MAX_NAME_LEN).
+        // input:
+        GrB_Vector v,   // vector to query
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Scalar_TypeName: return the name of the GrB_Type of a GrB_Scalar
@@ -1735,14 +1735,14 @@ int LAGraph_Vector_TypeName
 
 LAGRAPH_PUBLIC
 int LAGraph_Scalar_TypeName
-(
-    // output:
-    char *name,     // name of the type of the scalar s (user-provided array
-                    // of size at least LAGRAPH_MAX_NAME_LEN).
-    // input:
-    GrB_Scalar s,   // scalar to query
-    char *msg
-) ;
+    (
+        // output:
+        char *name,     // name of the type of the scalar s (user-provided array
+        // of size at least LAGRAPH_MAX_NAME_LEN).
+        // input:
+        GrB_Scalar s,   // scalar to query
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_PrintLevel:  control printing in LAGraph_*_Print methods
@@ -1754,29 +1754,29 @@ int LAGraph_Scalar_TypeName
 
 typedef enum
 {
-    LAGraph_SILENT = 0,     ///< nothing is printed.
-    LAGraph_SUMMARY = 1,    ///< print a terse summary.
-    LAGraph_SHORT = 2,      ///< short description, about 30 entries.
-    LAGraph_COMPLETE = 3,   ///< print the entire contents of the object.
-    LAGraph_SHORT_VERBOSE = 4,    ///< short, but with "%.15g" for doubles.
-    LAGraph_COMPLETE_VERBOSE = 5  ///< complete, but "%.15g" for doubles.
-    // FUTURE:
-    // LAGraph_SHORT_ARRAY ...
-    // LAGraph_COMPLETE_ARRAY ...
-    //
-    //      .  3.3 . 9 .
-    //     99  32  . . .
-    //
-    // LAGraph_SHORT_STRUCTURE ...
-    // LAGraph_COMPLETE_STRUCTURE ...
-    //
-    //      . x . x x x .
-    //      x x . x x x .
-    //      . x . x . x .
-    //      . . . . x x .
-    // FUTURE: # of digits per entry? automatic digits per column?
+  LAGraph_SILENT = 0,     ///< nothing is printed.
+  LAGraph_SUMMARY = 1,    ///< print a terse summary.
+  LAGraph_SHORT = 2,      ///< short description, about 30 entries.
+  LAGraph_COMPLETE = 3,   ///< print the entire contents of the object.
+  LAGraph_SHORT_VERBOSE = 4,    ///< short, but with "%.15g" for doubles.
+  LAGraph_COMPLETE_VERBOSE = 5  ///< complete, but "%.15g" for doubles.
+  // FUTURE:
+  // LAGraph_SHORT_ARRAY ...
+  // LAGraph_COMPLETE_ARRAY ...
+  //
+  //      .  3.3 . 9 .
+  //     99  32  . . .
+  //
+  // LAGraph_SHORT_STRUCTURE ...
+  // LAGraph_COMPLETE_STRUCTURE ...
+  //
+  //      . x . x x x .
+  //      x x . x x x .
+  //      . x . x . x .
+  //      . . . . x x .
+  // FUTURE: # of digits per entry? automatic digits per column?
 }
-LAGraph_PrintLevel ;
+    LAGraph_PrintLevel ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Graph_Print: print the contents of a graph
@@ -1802,13 +1802,13 @@ LAGraph_PrintLevel ;
 
 LAGRAPH_PUBLIC
 int LAGraph_Graph_Print
-(
-    // input:
-    const LAGraph_Graph G,  // graph to display
-    LAGraph_PrintLevel pr,  // print level (0 to 5)
-    FILE *f,                // file to write to, must already be open
-    char *msg
-) ;
+    (
+        // input:
+        const LAGraph_Graph G,  // graph to display
+        LAGraph_PrintLevel pr,  // print level (0 to 5)
+        FILE *f,                // file to write to, must already be open
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Matrix_Print: pretty-print a matrix
@@ -1832,14 +1832,14 @@ int LAGraph_Graph_Print
 
 LAGRAPH_PUBLIC
 int LAGraph_Matrix_Print
-(
-    // input:
-    const GrB_Matrix A,     // matrix to pretty-print to the file
-    LAGraph_PrintLevel pr,  // print level (0 to 5)
-    FILE *f,            // file to write it to, must be already open; use
-                        // stdout or stderr to print to those locations.
-    char *msg
-) ;
+    (
+        // input:
+        const GrB_Matrix A,     // matrix to pretty-print to the file
+        LAGraph_PrintLevel pr,  // print level (0 to 5)
+        FILE *f,            // file to write it to, must be already open; use
+        // stdout or stderr to print to those locations.
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Vector_Print: pretty-print a matrix
@@ -1864,14 +1864,14 @@ int LAGraph_Matrix_Print
 
 LAGRAPH_PUBLIC
 int LAGraph_Vector_Print
-(
-    // input:
-    const GrB_Vector v,     // vector to pretty-print to the file
-    LAGraph_PrintLevel pr,  // print level (0 to 5)
-    FILE *f,            // file to write it to, must be already open; use
-                        // stdout or stderr to print to those locations.
-    char *msg
-) ;
+    (
+        // input:
+        const GrB_Vector v,     // vector to pretty-print to the file
+        LAGraph_PrintLevel pr,  // print level (0 to 5)
+        FILE *f,            // file to write it to, must be already open; use
+        // stdout or stderr to print to those locations.
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Matrix_IsEqual: compare for exact equality
@@ -1896,14 +1896,14 @@ int LAGraph_Vector_Print
 
 LAGRAPH_PUBLIC
 int LAGraph_Matrix_IsEqual
-(
-    // output:
-    bool *result,       // true if A == B, false if A != B or error
-    // input:
-    const GrB_Matrix A,
-    const GrB_Matrix B,
-    char *msg
-) ;
+    (
+        // output:
+        bool *result,       // true if A == B, false if A != B or error
+        // input:
+        const GrB_Matrix A,
+        const GrB_Matrix B,
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Matrix_IsEqualOp: check if two matrices are equal with given op
@@ -1931,15 +1931,15 @@ int LAGraph_Matrix_IsEqual
 
 LAGRAPH_PUBLIC
 int LAGraph_Matrix_IsEqualOp
-(
-    // output:
-    bool *result,           // true if A == B, false if A != B or error
-    // input:
-    const GrB_Matrix A,
-    const GrB_Matrix B,
-    const GrB_BinaryOp op,        // comparator to use
-    char *msg
-) ;
+    (
+        // output:
+        bool *result,           // true if A == B, false if A != B or error
+        // input:
+        const GrB_Matrix A,
+        const GrB_Matrix B,
+        const GrB_BinaryOp op,        // comparator to use
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Vector_IsEqual: check if two vectors are equal
@@ -1964,14 +1964,14 @@ int LAGraph_Matrix_IsEqualOp
 
 LAGRAPH_PUBLIC
 int LAGraph_Vector_IsEqual
-(
-    // output:
-    bool *result,           // true if A == B, false if A != B or error
-    // input:
-    const GrB_Vector u,
-    const GrB_Vector v,
-    char *msg
-) ;
+    (
+        // output:
+        bool *result,           // true if A == B, false if A != B or error
+        // input:
+        const GrB_Vector u,
+        const GrB_Vector v,
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGraph_Vector_IsEqualOp: check if two vectors are equal with given op
@@ -1999,15 +1999,15 @@ int LAGraph_Vector_IsEqual
 
 LAGRAPH_PUBLIC
 int LAGraph_Vector_IsEqualOp
-(
-    // output:
-    bool *result,           // true if u == v, false if u != v or error
-    // input:
-    const GrB_Vector u,
-    const GrB_Vector v,
-    const GrB_BinaryOp op,        // comparator to use
-    char *msg
-) ;
+    (
+        // output:
+        bool *result,           // true if u == v, false if u != v or error
+        // input:
+        const GrB_Vector u,
+        const GrB_Vector v,
+        const GrB_BinaryOp op,        // comparator to use
+        char *msg
+    ) ;
 
 //==============================================================================
 // LAGraph Basic algorithms
@@ -2048,13 +2048,13 @@ int LAGraph_Vector_IsEqualOp
 
 LAGRAPH_PUBLIC
 int LAGraph_TriangleCount
-(
-    // output:
-    uint64_t *ntriangles,   // # of triangles
-    // input/output:
-    LAGraph_Graph  G,
-    char *msg
-) ;
+    (
+        // output:
+        uint64_t *ntriangles,   // # of triangles
+        // input/output:
+        LAGraph_Graph  G,
+        char *msg
+    ) ;
 
 //==============================================================================
 // LAGraph Advanced algorithms and utilities
@@ -2103,15 +2103,15 @@ int LAGraph_TriangleCount
 
 LAGRAPH_PUBLIC
 int LAGr_Init
-(
-    // input:
-    GrB_Mode mode,      // mode for GrB_Init
-    void * (* user_malloc_function  ) (size_t),
-    void * (* user_calloc_function  ) (size_t, size_t),
-    void * (* user_realloc_function ) (void *, size_t),
-    void   (* user_free_function    ) (void *),
-    char *msg
-) ;
+    (
+        // input:
+        GrB_Mode mode,      // mode for GrB_Init
+        void * (* user_malloc_function  ) (size_t),
+        void * (* user_calloc_function  ) (size_t, size_t),
+        void * (* user_realloc_function ) (void *, size_t),
+        void   (* user_free_function    ) (void *),
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_SortByDegree: sort a graph by its row or column degree
@@ -2139,15 +2139,15 @@ int LAGr_Init
 
 LAGRAPH_PUBLIC
 int LAGr_SortByDegree
-(
-    // output:
-    int64_t **P,            // permutation vector of size n
-    // input:
-    const LAGraph_Graph G,  // graph of n nodes
-    bool byout,             // if true, sort G->out_degree, else G->in_degree
-    bool ascending,         // sort in ascending or descending order
-    char *msg
-) ;
+    (
+        // output:
+        int64_t **P,            // permutation vector of size n
+        // input:
+        const LAGraph_Graph G,  // graph of n nodes
+        bool byout,             // if true, sort G->out_degree, else G->in_degree
+        bool ascending,         // sort in ascending or descending order
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_SampleDegree: sample the degree median and mean
@@ -2175,17 +2175,17 @@ int LAGr_SortByDegree
 
 LAGRAPH_PUBLIC
 int LAGr_SampleDegree
-(
-    // output:
-    double *sample_mean,    // sampled mean degree
-    double *sample_median,  // sampled median degree
-    // input:
-    const LAGraph_Graph G,  // graph of n nodes
-    bool byout,             // if true, sample G->out_degree, else G->in_degree
-    int64_t nsamples,       // number of samples
-    uint64_t seed,          // random number seed
-    char *msg
-) ;
+    (
+        // output:
+        double *sample_mean,    // sampled mean degree
+        double *sample_median,  // sampled median degree
+        // input:
+        const LAGraph_Graph G,  // graph of n nodes
+        bool byout,             // if true, sample G->out_degree, else G->in_degree
+        int64_t nsamples,       // number of samples
+        uint64_t seed,          // random number seed
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_BreadthFirstSearch: breadth-first search
@@ -2226,15 +2226,15 @@ int LAGr_SampleDegree
 
 LAGRAPH_PUBLIC
 int LAGr_BreadthFirstSearch
-(
-    // output:
-    GrB_Vector *level,
-    GrB_Vector *parent,
-    // input:
-    const LAGraph_Graph G,
-    GrB_Index src,
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Vector *level,
+        GrB_Vector *parent,
+        // input:
+        const LAGraph_Graph G,
+        GrB_Index src,
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_ConnectedComponents: connected components of an undirected graph
@@ -2263,13 +2263,13 @@ int LAGr_BreadthFirstSearch
 
 LAGRAPH_PUBLIC
 int LAGr_ConnectedComponents
-(
-    // output:
-    GrB_Vector *component,
-    // input:
-    const LAGraph_Graph G,  // input graph
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Vector *component,
+        // input:
+        const LAGraph_Graph G,  // input graph
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_SingleSourceShortestPath: single-source shortest paths
@@ -2306,15 +2306,15 @@ int LAGr_ConnectedComponents
 
 LAGRAPH_PUBLIC
 int LAGr_SingleSourceShortestPath
-(
-    // output:
-    GrB_Vector *path_length,
-    // input:
-    const LAGraph_Graph G,
-    GrB_Index src,
-    GrB_Scalar Delta,           // delta value for delta stepping
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Vector *path_length,
+        // input:
+        const LAGraph_Graph G,
+        GrB_Index src,
+        GrB_Scalar Delta,           // delta value for delta stepping
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_Betweenness: betweeness centrality metric
@@ -2347,15 +2347,15 @@ int LAGr_SingleSourceShortestPath
 
 LAGRAPH_PUBLIC
 int LAGr_Betweenness
-(
-    // output:
-    GrB_Vector *centrality,     // centrality(i): betweeness centrality of i
-    // input:
-    const LAGraph_Graph G,      // input graph
-    const GrB_Index *sources,   // source vertices to compute shortest paths
-    int32_t ns,                 // number of source vertices
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Vector *centrality,     // centrality(i): betweeness centrality of i
+        // input:
+        const LAGraph_Graph G,      // input graph
+        const GrB_Index *sources,   // source vertices to compute shortest paths
+        int32_t ns,                 // number of source vertices
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_PageRank: PageRank of a graph.
@@ -2385,17 +2385,17 @@ int LAGr_Betweenness
 
 LAGRAPH_PUBLIC
 int LAGr_PageRank
-(
-    // output:
-    GrB_Vector *centrality,
-    int *iters,
-    // input:
-    const LAGraph_Graph G,
-    float damping,
-    float tol,
-    int itermax,
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Vector *centrality,
+        int *iters,
+        // input:
+        const LAGraph_Graph G,
+        float damping,
+        float tol,
+        int itermax,
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_PageRankGAP: GAP-style PageRank of a graph (for GAP benchmarking only)
@@ -2409,17 +2409,17 @@ int LAGr_PageRank
 
 LAGRAPH_PUBLIC
 int LAGr_PageRankGAP
-(
-    // output:
-    GrB_Vector *centrality,
-    int *iters,
-    // input:
-    const LAGraph_Graph G,
-    float damping,
-    float tol,
-    int itermax,
-    char *msg
-) ;
+    (
+        // output:
+        GrB_Vector *centrality,
+        int *iters,
+        // input:
+        const LAGraph_Graph G,
+        float damping,
+        float tol,
+        int itermax,
+        char *msg
+    ) ;
 
 //------------------------------------------------------------------------------
 // LAGr_TriangleCount: triangle counting
@@ -2431,18 +2431,15 @@ int LAGr_PageRankGAP
 
 typedef enum
 {
-    LAGr_TriangleCount_AutoMethod = 0,  ///< auto selection of method
-    LAGr_TriangleCount_Burkhardt = 1,   ///< sum (sum ((A^2) .* A)) / 6
-    LAGr_TriangleCount_Cohen = 2,       ///< sum (sum ((L * U) .* A)) / 2
-    LAGr_TriangleCount_Sandia_LL = 3,   ///< sum (sum ((L * L) .* L))
-    LAGr_TriangleCount_Sandia_UU = 4,   ///< sum (sum ((U * U) .* U))
-    LAGr_TriangleCount_Sandia_LUT = 5,  ///< sum (sum ((L * U') .* L))
-    LAGr_TriangleCount_Sandia_ULT = 6,  ///< sum (sum ((U * L') .* U))
-
-    /// Added by Zhen Peng on 12/5/2022
-    LAGr_TriangleCount_Burkhardt_Literal = 7, ///< sum (sum ((A^2) .* A)) / 6, no masking, elementwise multiplication
+  LAGr_TriangleCount_AutoMethod = 0,  ///< auto selection of method
+  LAGr_TriangleCount_Burkhardt = 1,   ///< sum (sum ((A^2) .* A)) / 6
+  LAGr_TriangleCount_Cohen = 2,       ///< sum (sum ((L * U) .* A)) / 2
+  LAGr_TriangleCount_Sandia_LL = 3,   ///< sum (sum ((L * L) .* L))
+  LAGr_TriangleCount_Sandia_UU = 4,   ///< sum (sum ((U * U) .* U))
+  LAGr_TriangleCount_Sandia_LUT = 5,  ///< sum (sum ((L * U') .* L))
+  LAGr_TriangleCount_Sandia_ULT = 6,  ///< sum (sum ((U * L') .* U))
 }
-LAGr_TriangleCount_Method ;
+    LAGr_TriangleCount_Method ;
 
 /** LAGr_TriangleCount_Presort: an enum to control if/how the matrix is sorted
  * prior to counting triangles.
@@ -2450,19 +2447,19 @@ LAGr_TriangleCount_Method ;
 
 typedef enum
 {
-    LAGr_TriangleCount_NoSort = 2,      ///< no sort
-    LAGr_TriangleCount_Ascending = 1,   ///< sort by degree, ascending.
-    LAGr_TriangleCount_Descending = -1, ///< sort by degree, descending.
-    LAGr_TriangleCount_AutoSort = 0,    ///< auto selection of presort:
-        ///< No presort is done for the Burkhardt or Cohen methods, and
-        ///< no sort is done for the Sandia_* methods if the sampled mean
-        ///< out-degree is <= 4 * the sample median out-degree.
-        ///< Otherwise: sort in ascending order for Sandia_LL and Sandia_LUT,
-        ///< descending ordering for Sandia_UU and Sandia_ULT.  On output,
-        ///< presort is modified to reflect the sorting method used (NoSort,
-        ///< Ascending, or Descending).
+  LAGr_TriangleCount_NoSort = 2,      ///< no sort
+  LAGr_TriangleCount_Ascending = 1,   ///< sort by degree, ascending.
+  LAGr_TriangleCount_Descending = -1, ///< sort by degree, descending.
+  LAGr_TriangleCount_AutoSort = 0,    ///< auto selection of presort:
+  ///< No presort is done for the Burkhardt or Cohen methods, and
+  ///< no sort is done for the Sandia_* methods if the sampled mean
+  ///< out-degree is <= 4 * the sample median out-degree.
+  ///< Otherwise: sort in ascending order for Sandia_LL and Sandia_LUT,
+  ///< descending ordering for Sandia_UU and Sandia_ULT.  On output,
+  ///< presort is modified to reflect the sorting method used (NoSort,
+  ///< Ascending, or Descending).
 }
-LAGr_TriangleCount_Presort ;
+    LAGr_TriangleCount_Presort ;
 
 /** LAGr_TriangleCount: count the triangles in a graph (advanced API).
  *
@@ -2496,38 +2493,14 @@ LAGr_TriangleCount_Presort ;
 
 LAGRAPH_PUBLIC
 int LAGr_TriangleCount
-(
-    // output:
-    uint64_t *ntriangles,
-    // input:
-    const LAGraph_Graph G,
-    LAGr_TriangleCount_Method *method,
-    LAGr_TriangleCount_Presort *presort,
-    char *msg
-) ;
-
-/// Added by Zhen Peng on 12/28/2022
-
-typedef enum
-{
-  LAGr_MaskedSpGEMM_AutoMethod = 0,  ///< auto selection of method
-  LAGr_MaskedSpGEMM_NoMask = 1,   ///< sum (sum ((A^2) .* A)) / 6
-  LAGr_MaskedSpGEMM_AllZeroMask = 2,       ///< sum (sum ((L * U) .* A)) / 2
-  LAGr_MaskedSpGEMM_UseMask = 3,   ///< sum (sum ((L * L) .* L))
-}
-    LAGr_MaskedSpGEMM_Method ;
-
-LAGRAPH_PUBLIC
-int LAGr_MaskedSpGEMM
     (
         // output:
         uint64_t *ntriangles,
         // input:
         const LAGraph_Graph G,
-        const LAGraph_Graph M, // Mask
-        LAGr_MaskedSpGEMM_Method *method,
-//    LAGr_TriangleCount_Presort *presort,
+        LAGr_TriangleCount_Method *method,
+        LAGr_TriangleCount_Presort *presort,
         char *msg
-) ;
+    ) ;
 
 #endif

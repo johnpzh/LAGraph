@@ -63,6 +63,30 @@
 #include "LG_internal.h"
 
 //------------------------------------------------------------------------------
+// Added by Zhen Peng 12/5/2022
+// get_matrix_trace: return the matrix's trace.
+//------------------------------------------------------------------------------
+static int64_t get_matrix_trace
+(
+    GrB_Matrix *L,
+    GrB_Matrix *U,
+    GrB_Matrix A,
+    char *msg
+)
+{
+  GrB_Index num_rows;
+  GRB_TRY (GrB_Matrix_nrows (&num_rows, A)) ;
+  int64_t trace = 0;
+  for (int64_t r_i = 0; r_i < num_rows; ++r_i) {
+    int64_t val;
+    GRB_TRY (GrB_Matrix_extractElement (&val, A, r_i, r_i)) ;
+    trace += val;
+  }
+
+  return trace;
+}
+
+//------------------------------------------------------------------------------
 // tricount_prep: construct L and U for LAGr_TriangleCount
 //------------------------------------------------------------------------------
 
@@ -140,7 +164,9 @@ int LAGr_TriangleCount
     method == LAGr_TriangleCount_Sandia_LL  ||  // 3: sum (sum ((L * L) .* L))
     method == LAGr_TriangleCount_Sandia_UU  ||  // 4: sum (sum ((U * U) .* U))
     method == LAGr_TriangleCount_Sandia_LUT ||  // 5: sum (sum ((L * U') .* L))
-    method == LAGr_TriangleCount_Sandia_ULT,    // 6: sum (sum ((U * L') .* U))
+    method == LAGr_TriangleCount_Sandia_ULT ||  // 6: sum (sum ((U * L') .* U))
+    /// Added by Zhen Peng on 12/5/2022
+    method == LAGr_TriangleCount_Burkhardt_Literal, // 7: sum (sum ((A^2) .* A)) / 6, no masking, elementwise multiplication
     GrB_INVALID_VALUE, "method is invalid") ;
 
     // get the presort
@@ -297,6 +323,16 @@ int LAGr_TriangleCount
 
     switch (method)
     {
+        /// Added by Zhen Peng on 12/5/2022
+        case LAGr_TriangleCount_Burkhardt_Literal:  // 7: sum (sum ((A^2) .* A)) / 6, no masking, elementwise multiplication
+
+            GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
+            GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_TIMES_INT64, C, A, NULL)) ;
+//            GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_BAND_INT64, C, A, NULL)) ; // Wrong answers! Not sure why.
+//            ntri = get_matrix_trace(&L, &U, C, msg);
+            GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
+            ntri /= 6 ;
+            break ;
 
         case LAGr_TriangleCount_Burkhardt:  // 1: sum (sum ((A^2) .* A)) / 6
 

@@ -51,8 +51,6 @@ char *method_name (int method, int sorting)
         case LAGr_TriangleCount_Sandia_UU:  s = "Sandia_UU: sum ((U*U) .* U)    " ; break ;
         case LAGr_TriangleCount_Sandia_LUT: s = "Sandia_LUT: sum ((L*U') .* L)  " ; break ;
         case LAGr_TriangleCount_Sandia_ULT: s = "Sandia_ULT: sum ((U*L') .* U)  " ; break ;
-        /// Added by Zhen Peng on 12/5/2022
-        case LAGr_TriangleCount_Burkhardt_Literal: s = "Burkhardt_Literal: sum ((A^2) .* A) / 6 No Masking" ; break ;
         default: abort ( ) ;
     }
 
@@ -181,27 +179,24 @@ int main (int argc, char **argv)
     // for (int method = 5 ; method <= 6 ; method++)
 
     // try all methods 3 to 5
-//    for (int method = 3 ; method <= 5 ; method++)
-//    for (int method = 1 ; method <= 6 ; method++)
-//    for (int method = 1; method <= 7 ; method++)
-    for (int method = 7; method >= 1 ; method--)
+    for (int method = 3 ; method <= 5 ; method++)
     {
         // for (int sorting = -1 ; sorting <= 2 ; sorting++)
 
         int sorting = LAGr_TriangleCount_AutoSort ; // just use auto-sort
         {
             printf ("\nMethod: ") ; print_method (stdout, method, sorting) ;
-//            if (n == 134217726 && method < 5)
-//            {
-//                printf ("kron fails on method %d; skipped\n", method) ;
-//                continue ;
-//            }
-//            if (n != 134217728 && method < 5)
-//            {
-//                printf ("all but urand is slow with method %d: skipped\n",
-//                        method) ;
-//                continue ;
-//            }
+            if (n == 134217726 && method < 5)
+            {
+                printf ("kron fails on method %d; skipped\n", method) ;
+                continue ;
+            }
+            if (n != 134217728 && method < 5)
+            {
+                printf ("all but urand is slow with method %d: skipped\n",
+                        method) ;
+                continue ;
+            }
 
             for (int t = 1 ; t <= nt ; t++)
             {
