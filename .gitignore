@@ -46,7 +46,7 @@ CMakeFiles*
 **/.venv/*
 
 cmake-build*/
-local_stuff/
+#local_stuff/
 
 # Do not ignore this file
 !.gitignore
