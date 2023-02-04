@@ -2440,7 +2440,12 @@ typedef enum
     LAGr_TriangleCount_Sandia_ULT = 6,  ///< sum (sum ((U * L') .* U))
 
     /// Added by Zhen Peng on 12/5/2022
-    LAGr_TriangleCount_Burkhardt_Literal = 7, ///< sum (sum ((A^2) .* A)) / 6, no masking, elementwise multiplication
+    LAGr_TriangleCount_Burkhardt_NoMask = 7, ///< sum (sum ((A^2) .* A)) / 6, no masking, elementwise multiplication
+    LAGr_TriangleCount_Cohen_NoMask = 8,       ///< sum (sum ((L * U) .* A)) / 2, no masking, elementwise multiplication
+    LAGr_TriangleCount_Sandia_LL_NoMask = 9,   ///< sum (sum ((L * L) .* L)), no masking, elementwise multiplication
+    LAGr_TriangleCount_Sandia_UU_NoMask = 10,   ///< sum (sum ((U * U) .* U)), no masking, elementwise multiplication
+    LAGr_TriangleCount_Sandia_LUT_NoMask = 11,  ///< sum (sum ((L * U') .* L)), no masking, elementwise multiplication
+    LAGr_TriangleCount_Sandia_ULT_NoMask = 12,  ///< sum (sum ((U * L') .* U)), no masking, elementwise multiplication
 }
 LAGr_TriangleCount_Method ;
 
@@ -2506,6 +2511,21 @@ int LAGr_TriangleCount
     char *msg
 ) ;
 
+/// Added by Zhen Peng on 01/03/2023
+LAGRAPH_PUBLIC
+int LAGr_TriangleCount_with_LU
+  (
+        // output:
+        uint64_t *ntriangles,
+        // input:
+        const LAGraph_Graph G,
+        const GrB_Matrix *L_p,
+        const GrB_Matrix *U_p,
+        LAGr_TriangleCount_Method *method,
+        LAGr_TriangleCount_Presort *presort,
+        char *msg
+) ;
+
 /// Added by Zhen Peng on 12/28/2022
 
 typedef enum
@@ -2519,13 +2539,26 @@ typedef enum
 
 LAGRAPH_PUBLIC
 int LAGr_MaskedSpGEMM
-    (
+(
         // output:
         uint64_t *ntriangles,
         // input:
         const LAGraph_Graph G,
         const LAGraph_Graph M, // Mask
         LAGr_MaskedSpGEMM_Method *method,
+//    LAGr_TriangleCount_Presort *presort,
+        char *msg
+) ;
+
+LAGRAPH_PUBLIC
+int LAGr_MaskedSpGEMM_print_matrix
+(
+//        // output:
+//        GrB_Matrix C,
+        // input:
+        const LAGraph_Graph G,
+        const LAGraph_Graph M, // Mask
+        LAGr_MaskedSpGEMM_Method *p_method,
 //    LAGr_TriangleCount_Presort *presort,
         char *msg
 ) ;

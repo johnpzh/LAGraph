@@ -90,35 +90,35 @@ static int64_t get_matrix_trace
 // tricount_prep: construct L and U for LAGr_TriangleCount
 //------------------------------------------------------------------------------
 
-static int tricount_prep
-    (
-        GrB_Matrix *L,      // if present, compute L = tril (A,-1)
-        GrB_Matrix *U,      // if present, compute U = triu (A, 1)
-        GrB_Matrix A,       // input matrix
-        char *msg
-    )
-{
-  GrB_Index n ;
-  GRB_TRY (GrB_Matrix_nrows (&n, A)) ;
-
-  if (L != NULL)
-  {
-    // L = tril (A,-1)
-    GRB_TRY (GrB_Matrix_new (L, GrB_BOOL, n, n)) ;
-    GRB_TRY (GrB_select (*L, NULL, NULL, GrB_TRIL, A, (int64_t) (-1),
-                         NULL)) ;
-    GRB_TRY (GrB_Matrix_wait (*L, GrB_MATERIALIZE)) ;
-  }
-
-  if (U != NULL)
-  {
-    // U = triu (A,1)
-    GRB_TRY (GrB_Matrix_new (U, GrB_BOOL, n, n)) ;
-    GRB_TRY (GrB_select (*U, NULL, NULL, GrB_TRIU, A, (int64_t) 1, NULL)) ;
-    GRB_TRY (GrB_Matrix_wait (*U, GrB_MATERIALIZE)) ;
-  }
-  return (GrB_SUCCESS) ;
-}
+//static int tricount_prep
+//    (
+//        GrB_Matrix *L,      // if present, compute L = tril (A,-1)
+//        GrB_Matrix *U,      // if present, compute U = triu (A, 1)
+//        GrB_Matrix A,       // input matrix
+//        char *msg
+//    )
+//{
+//  GrB_Index n ;
+//  GRB_TRY (GrB_Matrix_nrows (&n, A)) ;
+//
+//  if (L != NULL)
+//  {
+//    // L = tril (A,-1)
+//    GRB_TRY (GrB_Matrix_new (L, GrB_BOOL, n, n)) ;
+//    GRB_TRY (GrB_select (*L, NULL, NULL, GrB_TRIL, A, (int64_t) (-1),
+//                         NULL)) ;
+//    GRB_TRY (GrB_Matrix_wait (*L, GrB_MATERIALIZE)) ;
+//  }
+//
+//  if (U != NULL)
+//  {
+//    // U = triu (A,1)
+//    GRB_TRY (GrB_Matrix_new (U, GrB_BOOL, n, n)) ;
+//    GRB_TRY (GrB_select (*U, NULL, NULL, GrB_TRIU, A, (int64_t) 1, NULL)) ;
+//    GRB_TRY (GrB_Matrix_wait (*U, GrB_MATERIALIZE)) ;
+//  }
+//  return (GrB_SUCCESS) ;
+//}
 
 //------------------------------------------------------------------------------
 // LAGraph_tricount: count the number of triangles in a graph
@@ -188,7 +188,7 @@ int LAGr_MaskedSpGEMM
   if (method == LAGr_MaskedSpGEMM_AutoMethod)
   {
     // AutoMethod: use default, Sandia_LUT: sum (sum ((L * U') .* L))
-    method = LAGr_MaskedSpGEMM_NoMask ;
+    method = LAGr_MaskedSpGEMM_UseMask ;
   }
 
 //  // only the Sandia_* methods can benefit from the presort
@@ -215,9 +215,10 @@ int LAGr_MaskedSpGEMM
 
   GrB_Index n ;
   GRB_TRY (GrB_Matrix_nrows (&n, A)) ;
-  GRB_TRY (GrB_Matrix_new (&C, GrB_INT64, n, n)) ;
+  GRB_TRY (GrB_Matrix_new (&C, GrB_FP64, n, n)) ;
 #if LAGRAPH_SUITESPARSE
-  GrB_Semiring semiring = GxB_PLUS_PAIR_INT64 ;
+  GrB_Semiring semiring = GxB_PLUS_TIMES_FP64 ;
+//  GrB_Semiring semiring = GxB_PLUS_PAIR_INT64 ;
 #else
   GrB_Semiring semiring = LAGraph_plus_one_int64 ;
 #endif
@@ -318,6 +319,18 @@ int LAGr_MaskedSpGEMM
 
   int64_t ntri = -1;
 
+  /// Added by Zhen Peng on 1/9/2023
+  /// Turning off the sorting
+  /**
+   *  GrB_Info GrB_Descriptor_set // set a parameter in a descriptor
+      (
+        GrB_Descriptor desc, // descriptor to modify:: the descriptor object to be used during the op, i.e., gemm.
+        GrB_Desc_Field field, // parameter to change:: GxB_SORT
+        GrB_Desc_Value val // value to change it to:: 0
+      ) ;
+   */
+  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
+
   switch (method)
   {
 //    case LAGr_MaskedSpGEMM_NoMask:  // 7: sum (sum ((A^2) .* A)) / 6, no masking, elementwise multiplication
@@ -333,6 +346,7 @@ int LAGr_MaskedSpGEMM
     case LAGr_MaskedSpGEMM_NoMask:  // 1: Use no mask
 
       GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
+      GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_TIMES_FP64, C, Mask, NULL)) ;
 //      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
 //      ntri /= 6 ;
       break ;
@@ -346,11 +360,12 @@ int LAGr_MaskedSpGEMM
 //      ntri /= 2 ;
       break ;
 
-    case LAGr_MaskedSpGEMM_UseMask: // 3: Currently the same as AllZeroMask
+    case LAGr_MaskedSpGEMM_UseMask: // 3: Currently uses the input matrix A as the mask
 
       // using the masked saxpy3 method
 //      LG_TRY (tricount_prep (&L, NULL, A, msg)) ;
       GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
+//      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
 //      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
       break ;
 
@@ -391,5 +406,165 @@ int LAGr_MaskedSpGEMM
   if (p_method != NULL) (*p_method) = method ;
 //  if (p_presort != NULL) (*p_presort) = presort ;
   (*ntriangles) = (uint64_t) ntri ;
+  return (GrB_SUCCESS) ;
+}
+
+
+int LAGr_MaskedSpGEMM_print_matrix
+    (
+//        // output:
+//        GrB_Matrix *C_output,
+        // input:
+        const LAGraph_Graph G,
+        const LAGraph_Graph M, // Mask
+        LAGr_MaskedSpGEMM_Method *p_method,
+//    LAGr_TriangleCount_Presort *presort,
+        char *msg
+)
+{
+
+  //--------------------------------------------------------------------------
+  // check inputs
+  //--------------------------------------------------------------------------
+
+  LG_CLEAR_MSG ;
+//  GrB_Matrix L = NULL, U = NULL, T = NULL ;
+  GrB_Matrix C = NULL, L = NULL, U = NULL, T = NULL ;
+  int64_t *P = NULL ;
+
+  // get the method
+  LAGr_MaskedSpGEMM_Method method ;
+  method = (p_method == NULL) ? LAGr_MaskedSpGEMM_AutoMethod : (*p_method) ;
+  LG_ASSERT_MSG (
+      method == LAGr_MaskedSpGEMM_AutoMethod ||  // 0: use auto method
+      method == LAGr_MaskedSpGEMM_NoMask  ||  // 1: sum (sum ((A^2) .* A))/6
+      method == LAGr_MaskedSpGEMM_AllZeroMask      ||  // 2: sum (sum ((L * U) .*A))/2
+      method == LAGr_MaskedSpGEMM_UseMask,  // 3: sum (sum ((L * L) .* L))
+      GrB_INVALID_VALUE, "method is invalid") ;
+
+  LG_TRY (LAGraph_CheckGraph (G, msg)) ;
+//  LG_ASSERT (ntriangles != NULL, GrB_NULL_POINTER) ;
+//  LG_ASSERT (C_output != NULL, GrB_NULL_POINTER) ;
+//  LG_ASSERT (G->nself_edges == 0, LAGRAPH_NO_SELF_EDGES_ALLOWED) ;
+//
+
+  if (method == LAGr_MaskedSpGEMM_AutoMethod)
+  {
+    // AutoMethod: use default, Sandia_LUT: sum (sum ((L * U') .* L))
+    method = LAGr_MaskedSpGEMM_NoMask ;
+  }
+
+//
+  GrB_Matrix A = G->A ;
+  GrB_Vector Degree = G->out_degree ;
+  GrB_Matrix Mask = M->A;
+
+  //--------------------------------------------------------------------------
+  // initializations
+  //--------------------------------------------------------------------------
+
+  GrB_Index n ;
+  GRB_TRY (GrB_Matrix_nrows (&n, A)) ;
+  GRB_TRY (GrB_Matrix_new (&C, GrB_FP64, n, n)) ;
+//  GRB_TRY (GrB_Matrix_new (&C, GrB_INT64, n, n)) ;
+//  GRB_TRY (GrB_Matrix_new (&C, GrB_INT64, n, n)) ;
+#if LAGRAPH_SUITESPARSE
+  GrB_Semiring semiring = GxB_PLUS_TIMES_FP64 ;
+//  GrB_Semiring semiring = GxB_PLUS_PAIR_FP64 ;
+//  GrB_Semiring semiring = GxB_PLUS_PAIR_INT64 ;
+#else
+  GrB_Semiring semiring = LAGraph_plus_one_int64 ;
+#endif
+  GrB_Monoid monoid = GrB_PLUS_MONOID_INT64 ;
+
+  //--------------------------------------------------------------------------
+  // count triangles
+  //--------------------------------------------------------------------------
+
+  int64_t ntri = -1;
+
+  /// Added by Zhen Peng on 1/9/2023
+  /// Turning off the sorting
+  /**
+   *  GrB_Info GrB_Descriptor_set // set a parameter in a descriptor
+      (
+        GrB_Descriptor desc, // descriptor to modify:: the descriptor object to be used during the op, i.e., gemm.
+        GrB_Desc_Field field, // parameter to change:: GxB_SORT
+        GrB_Desc_Value val // value to change it to:: 0
+      ) ;
+   */
+  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
+
+  switch (method)
+  {
+
+    case LAGr_MaskedSpGEMM_NoMask:  // 1: Use no mask
+
+      GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
+      GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_TIMES_FP64, C, Mask, NULL)) ;
+
+//      printf("#### Output C ####\n");
+//      LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, stdout, msg));
+      {
+        char filename[] = "output.LAGr_MaskedSpGEMM_NoMask.txt";
+        FILE *fout = fopen(filename, "w");
+        if (!fout) {
+          fprintf(stderr, "Error %s:%d: cannot create file %s .\n", __FILE__, __LINE__, filename);
+          exit(EXIT_FAILURE);
+        }
+        LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, fout, msg));
+        fclose(fout);
+      }
+      break ;
+
+    case LAGr_MaskedSpGEMM_AllZeroMask: // 2: Read a mask from files
+
+      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
+
+//      printf("#### Output C ####\n");
+//      LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, stdout, msg));
+      {
+        char filename[] = "output.LAGr_MaskedSpGEMM_AllZeroMask.txt";
+        FILE *fout = fopen(filename, "w");
+        if (!fout) {
+          fprintf(stderr, "Error %s:%d: cannot create file %s .\n", __FILE__, __LINE__, filename);
+          exit(EXIT_FAILURE);
+        }
+        LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, fout, msg));
+        fclose(fout);
+      }
+      break ;
+
+    case LAGr_MaskedSpGEMM_UseMask: // 3: Currently uses the input matrix A as the mask
+
+      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
+
+//      printf("#### Output C ####\n");
+//      LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_SHORT, stdout, msg));
+      {
+        char filename[] = "output.LAGr_MaskedSpGEMM_UseMask.txt";
+        FILE *fout = fopen(filename, "w");
+        if (!fout) {
+          fprintf(stderr, "Error %s:%d: cannot create file %s .\n", __FILE__, __LINE__, filename);
+          exit(EXIT_FAILURE);
+        }
+        LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, fout, msg));
+        fclose(fout);
+      }
+      break ;
+
+  }
+
+//  printf("#### Output C ####\n");
+//  LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, stdout, msg));
+//  LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE, stdout, msg));
+  //--------------------------------------------------------------------------
+  // return result
+  //--------------------------------------------------------------------------
+
+  LG_FREE_ALL ;
+  if (p_method != NULL) (*p_method) = method ;
+//  if (p_presort != NULL) (*p_presort) = presort ;
+//  (*ntriangles) = (uint64_t) ntri ;
   return (GrB_SUCCESS) ;
 }

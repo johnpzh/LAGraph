@@ -54,11 +54,9 @@ int main (int argc, char **argv)
 
     int nt = NTHREAD_LIST ;
     int Nthreads [20] = { 0, THREAD_LIST } ;
-    /// Changed by Zhen Peng on 01/03/2023
-//    int nthreads_max, nthreads_outer, nthreads_inner ;
-//    LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
-//    nthreads_max = nthreads_outer * nthreads_inner ;
-    int nthreads_max = 1;
+    int nthreads_max, nthreads_outer, nthreads_inner ;
+    LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
+    nthreads_max = nthreads_outer * nthreads_inner ;
     printf ("nthreads_max: %d\n", nthreads_max) ;
     if (Nthreads [1] == 0)
     {
@@ -88,11 +86,8 @@ int main (int argc, char **argv)
     //--------------------------------------------------------------------------
 
     char *matrix_name = (argc > 1) ? argv [1] : "stdin" ;
-  /// Changed by Zhen Peng on 01/03/2023
     LAGRAPH_TRY (readproblem (&G, &SourceNodes,
-        false, false, true, GrB_FP64, false, argc, argv)) ;
-//    LAGRAPH_TRY (readproblem (&G, &SourceNodes,
-//        false, false, true, NULL, false, argc, argv)) ;
+        false, false, true, NULL, false, argc, argv)) ;
 
     // compute G->out_degree
     LAGRAPH_TRY (LAGraph_Cached_OutDegree (G, msg)) ;
@@ -110,9 +105,6 @@ int main (int argc, char **argv)
     GrB_Index ntrials ;
     GRB_TRY (GrB_Matrix_nrows (&ntrials, SourceNodes)) ;
 
-    /// Changed by Zhen Peng on 01/03/2023
-    ntrials = 10;
-
     // HACK
     // ntrials = 4 ;
 
@@ -123,14 +115,10 @@ int main (int argc, char **argv)
     int64_t src ;
     GRB_TRY (GrB_Matrix_extractElement (&src, SourceNodes, 0, 0)) ;
     double twarmup = LAGraph_WallClockTime ( ) ;
-    /// Change by Zhen Peng on 01/03/2023
-    src = 0;
-    LAGRAPH_TRY (LAGr_BreadthFirstSearch (&level, &parent, G, src, msg)) ;
-//    LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent, G, src, msg)) ;
+    LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent, G, src, msg)) ;
     GrB_free (&parent) ;
     twarmup = LAGraph_WallClockTime ( ) - twarmup ;
-    printf ("warmup: parent and level, pushpull: %g sec\n", twarmup) ;
-//    printf ("warmup: parent only, pushpull: %g sec\n", twarmup) ;
+    printf ("warmup: parent only, pushpull: %g sec\n", twarmup) ;
 
     //--------------------------------------------------------------------------
     // run the BFS on all source nodes
@@ -149,11 +137,10 @@ int main (int argc, char **argv)
         printf ("\n------------------------------- threads: %2d\n", nthreads) ;
         for (int trial = 0 ; trial < ntrials ; trial++)
         {
-            /// Commented out by Zhen Peng on 01/03/2023
-//            int64_t src ;
-//            // src = SourceNodes [trial]
-//            GRB_TRY (GrB_Matrix_extractElement (&src, SourceNodes, trial, 0)) ;
-//            src-- ; // convert from 1-based to 0-based
+            int64_t src ;
+            // src = SourceNodes [trial]
+            GRB_TRY (GrB_Matrix_extractElement (&src, SourceNodes, trial, 0)) ;
+            src-- ; // convert from 1-based to 0-based
 
             {
 
@@ -163,19 +150,13 @@ int main (int argc, char **argv)
 
                 GrB_free (&parent) ;
                 double ttrial = LAGraph_WallClockTime ( ) ;
-                /// Change by Zhen Peng on 01/03/2023
-                LAGRAPH_TRY (LAGr_BreadthFirstSearch (&level, &parent,
+                LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent,
                     G, src, msg)) ;
-//                LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent,
-//                    G, src, msg)) ;
                 ttrial = LAGraph_WallClockTime ( ) - ttrial ;
                 tp [nthreads] += ttrial ;
-                printf ("parent and level  pushpull trial: %2d threads: %2d "
+                printf ("parent only  pushpull trial: %2d threads: %2d "
                     "src: %g %10.4f sec\n",
                     trial, nthreads, (double) src, ttrial) ;
-//                printf ("parent only  pushpull trial: %2d threads: %2d "
-//                    "src: %g %10.4f sec\n",
-//                    trial, nthreads, (double) src, ttrial) ;
                 fflush (stdout) ;
 
                 int32_t maxlevel ;
@@ -193,9 +174,6 @@ int main (int argc, char **argv)
 #endif
 
                 GrB_free (&parent) ;
-
-                /// Added by Zhen Peng on 01/03/2023
-                GrB_free(&level);
 
                 //--------------------------------------------------------------
                 // BFS to compute just level
@@ -277,9 +255,9 @@ int main (int argc, char **argv)
             tl  [nthreads] = tl  [nthreads] / ntrials ;
             tpl [nthreads] = tpl [nthreads] / ntrials ;
 
-//            fprintf (stderr, "Avg: BFS pushpull parent only  threads %3d: "
-//                "%10.3f sec: %s\n",
-//                 nthreads, tp [nthreads], matrix_name) ;
+            fprintf (stderr, "Avg: BFS pushpull parent only  threads %3d: "
+                "%10.3f sec: %s\n",
+                 nthreads, tp [nthreads], matrix_name) ;
 #if 0
             fprintf (stderr, "Avg: BFS pushpull level only   threads %3d: "
                 "%10.3f sec: %s\n",
@@ -291,7 +269,7 @@ int main (int argc, char **argv)
 #endif
 
             printf ("Avg: BFS pushpull parent only  threads %3d: "
-                "%10.6f sec: %s\n",
+                "%10.3f sec: %s\n",
                  nthreads, tp [nthreads], matrix_name) ;
 
 #if 0
@@ -306,8 +284,8 @@ int main (int argc, char **argv)
         }
     }
     // restore default
-//    LAGRAPH_TRY (LAGraph_SetNumThreads (nthreads_outer, nthreads_inner, msg)) ;
-//    printf ("\n") ;
+    LAGRAPH_TRY (LAGraph_SetNumThreads (nthreads_outer, nthreads_inner, msg)) ;
+    printf ("\n") ;
 
     //--------------------------------------------------------------------------
     // free all workspace and finish

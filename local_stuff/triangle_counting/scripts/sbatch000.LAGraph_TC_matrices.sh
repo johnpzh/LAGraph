@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH -A CENATE
-#SBATCH -t 9:0:0
+#SBATCH -t 09:09:09
 #SBATCH -N 1
-#SBATCH -J graphblass_MaskedSpGEMM
+#SBATCH -J tc_lagraph
 
 #First make sure the module commands are available.
 source /etc/profile.d/modules.sh
@@ -40,8 +40,8 @@ printenv
 #For each different parallel executable you launch we recommend
 #adding a corresponding ldd command to verify that the environment
 #that is loaded corresponds to the environment the executable was built in.
-project_path="/qfs/people/peng599/pppp/clion/LAGraph_mac/src/benchmark"
-command="bash do_gap_mxm"
+project_path="/people/peng599/pppp/clion/LAGraph_mac/src/benchmark"
+command="bash ./do_matrices_tc"
 
 cd "${project_path}" || exit
 eval "${command}"
