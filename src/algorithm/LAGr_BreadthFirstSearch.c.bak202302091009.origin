@@ -32,12 +32,10 @@ int LAGr_BreadthFirstSearch
     char *msg
 )
 {
-/// Changed by Zhen Peng on 02/09/2023
-//#if LAGRAPH_SUITESPARSE
-//    return LG_BreadthFirstSearch_SSGrB   (level, parent, G, src, msg) ;
-//#else
-//    return LG_BreadthFirstSearch_vanilla (level, parent, G, src, msg) ;
-//#endif
+#if LAGRAPH_SUITESPARSE
+    return LG_BreadthFirstSearch_SSGrB   (level, parent, G, src, msg) ;
+#else
     return LG_BreadthFirstSearch_vanilla (level, parent, G, src, msg) ;
+#endif
 }
 

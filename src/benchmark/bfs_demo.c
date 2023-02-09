@@ -90,7 +90,9 @@ int main (int argc, char **argv)
     char *matrix_name = (argc > 1) ? argv [1] : "stdin" ;
   /// Changed by Zhen Peng on 01/03/2023
     LAGRAPH_TRY (readproblem (&G, &SourceNodes,
-        false, false, true, GrB_FP64, false, argc, argv)) ;
+        false, false, false, GrB_FP64, false, argc, argv)) ;
+//    LAGRAPH_TRY (readproblem (&G, &SourceNodes,
+//        false, false, true, GrB_FP64, false, argc, argv)) ;
 //    LAGRAPH_TRY (readproblem (&G, &SourceNodes,
 //        false, false, true, NULL, false, argc, argv)) ;
 
@@ -111,30 +113,35 @@ int main (int argc, char **argv)
     GRB_TRY (GrB_Matrix_nrows (&ntrials, SourceNodes)) ;
 
     /// Changed by Zhen Peng on 01/03/2023
-    ntrials = 10;
+    ntrials = 1;
+//    ntrials = 10;
 
     // HACK
     // ntrials = 4 ;
 
-    //--------------------------------------------------------------------------
-    // warmup
-    //--------------------------------------------------------------------------
-
-    int64_t src ;
-    GRB_TRY (GrB_Matrix_extractElement (&src, SourceNodes, 0, 0)) ;
-    double twarmup = LAGraph_WallClockTime ( ) ;
-    /// Change by Zhen Peng on 01/03/2023
-    src = 0;
-    LAGRAPH_TRY (LAGr_BreadthFirstSearch (&level, &parent, G, src, msg)) ;
-//    LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent, G, src, msg)) ;
-    GrB_free (&parent) ;
-    twarmup = LAGraph_WallClockTime ( ) - twarmup ;
-    printf ("warmup: parent and level, pushpull: %g sec\n", twarmup) ;
-//    printf ("warmup: parent only, pushpull: %g sec\n", twarmup) ;
+//    //--------------------------------------------------------------------------
+//    // warmup
+//    //--------------------------------------------------------------------------
+//
+//    int64_t src ;
+//    GRB_TRY (GrB_Matrix_extractElement (&src, SourceNodes, 0, 0)) ;
+//    double twarmup = LAGraph_WallClockTime ( ) ;
+//    /// Change by Zhen Peng on 01/03/2023
+//    src = 0;
+//    LAGRAPH_TRY (LAGr_BreadthFirstSearch (&level, &parent, G, src, msg)) ;
+////    LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent, G, src, msg)) ;
+//    GrB_free (&parent) ;
+//    twarmup = LAGraph_WallClockTime ( ) - twarmup ;
+//    printf ("warmup: parent and level, pushpull: %g sec\n", twarmup) ;
+////    printf ("warmup: parent only, pushpull: %g sec\n", twarmup) ;
 
     //--------------------------------------------------------------------------
     // run the BFS on all source nodes
     //--------------------------------------------------------------------------
+
+    /// Added by Zhen Peng on 01/06/2023
+    /// Always use source 0
+    int64_t src = 0;
 
     for (int tt = 1 ; tt <= nt ; tt++)
     {
@@ -164,8 +171,10 @@ int main (int argc, char **argv)
                 GrB_free (&parent) ;
                 double ttrial = LAGraph_WallClockTime ( ) ;
                 /// Change by Zhen Peng on 01/03/2023
-                LAGRAPH_TRY (LAGr_BreadthFirstSearch (&level, &parent,
+                LAGRAPH_TRY (LAGr_BreadthFirstSearch (&level, NULL,
                     G, src, msg)) ;
+//                LAGRAPH_TRY (LAGr_BreadthFirstSearch (&level, &parent,
+//                    G, src, msg)) ;
 //                LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent,
 //                    G, src, msg)) ;
                 ttrial = LAGraph_WallClockTime ( ) - ttrial ;

@@ -23,6 +23,7 @@
 #endif
 
 // set this to 1 to check the results using a slow method
+//#define LG_CHECK_RESULT 1
 #define LG_CHECK_RESULT 0
 
 #define DEAD_CODE -911

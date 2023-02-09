@@ -68,13 +68,9 @@ int LG_BreadthFirstSearch_vanilla
     LG_ASSERT_MSG (src < n, GrB_INVALID_INDEX, "invalid source node") ;
 
     // determine the semiring type
-
-    /// Changed by Zhen Peng on 02/09/2023
-    GrB_Type int_type = GrB_INT64;
-//    GrB_Type     int_type  = (n > INT32_MAX) ? GrB_INT64 : GrB_INT32 ;
-//    GrB_BinaryOp
-//        second_op = (n > INT32_MAX) ? GrB_SECOND_INT64 : GrB_SECOND_INT32 ;
-
+    GrB_Type     int_type  = (n > INT32_MAX) ? GrB_INT64 : GrB_INT32 ;
+    GrB_BinaryOp
+        second_op = (n > INT32_MAX) ? GrB_SECOND_INT64 : GrB_SECOND_INT32 ;
     GrB_Semiring semiring  = NULL;
     GrB_IndexUnaryOp ramp = NULL ;
 
@@ -100,25 +96,14 @@ int LG_BreadthFirstSearch_vanilla
 
         // create a sparse boolean vector frontier, and set frontier(src) = true
         GRB_TRY (GrB_Vector_new(&frontier, GrB_BOOL, n)) ;
-//        GRB_TRY (GrB_assign(frontier, NULL, NULL, false, GrB_ALL, n, NULL)) ; /// Added by Zhen Peng to make frontier dense
-        GRB_TRY (GrB_Vector_setElement(frontier, false, src)) ;
-//        {//test
-//            GRB_TRY (GrB_Vector_setElement(frontier, false, 3)) ;
-//            GxB_print(frontier, GxB_COMPLETE);
-//        }
+        GRB_TRY (GrB_Vector_setElement(frontier, true, src)) ;
     }
-
-    /// Changed by Zhen Peng on 02/09/2023
-    semiring = GxB_ANY_PAIR_BOOL;
-//    semiring = GxB_PLUS_TIMES_FP64;
-    ramp = GrB_ROWINDEX_INT64;
 
     if (compute_level)
     {
         // create the level vector. v(i) is the level of node i
         // v (src) = 0 denotes the source node
         GRB_TRY (GrB_Vector_new(&l_level, int_type, n)) ;
-        GRB_TRY (GrB_assign(l_level, NULL, NULL, 0, GrB_ALL, n, NULL)) ; /// Added by Zhen Peng to make l_level dense
     }
 
     //--------------------------------------------------------------------------
@@ -127,40 +112,20 @@ int LG_BreadthFirstSearch_vanilla
 
     GrB_Index nq = 1 ;          // number of nodes in the current level
     GrB_Index last_nq = 0 ;
-    GrB_Index current_level = 1; /// Changed by Zhen Peng on 02/09/2023, because l_level is dense now
-//    GrB_Index current_level = 0;
+    GrB_Index current_level = 0;
     GrB_Index nvals = 1;
 
     // {!mask} is the set of unvisited nodes
     GrB_Vector mask = (compute_parent) ? l_parent : l_level ;
 
-    /// Turn off the sorting by Zhen Peng on 02/09/2023
-    GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
-
     // parent BFS
-//    do
-    for (nvals = 1; nvals <= n; ++nvals)
+    do
     {
-        {// test
-            printf("#########\n");
-            printf("nvals: %llu\n", nvals);
-            printf("frontier:\n");
-            GxB_print(frontier, GxB_COMPLETE);
-            printf("l_level:\n");
-            GxB_print(l_level, GxB_COMPLETE);
-        }
         if (compute_level)
         {
             // assign levels: l_level<s(frontier)> = current_level
             GRB_TRY( GrB_assign(l_level, frontier, GrB_NULL,
                                 current_level, GrB_ALL, n, GrB_DESC_S) );
-
-            {
-                printf("l_level2:\n");
-                GxB_print(l_level, GxB_COMPLETE);
-//                return 0;
-            }
-
             ++current_level;
         }
 
@@ -181,19 +146,10 @@ int LG_BreadthFirstSearch_vanilla
         GRB_TRY( GrB_vxm(frontier, mask, GrB_NULL, semiring,
                          frontier, A, GrB_DESC_RSC) );
 
-        /// Changed by Zhen Peng on 02/09/2023
-//        // done if frontier is empty
-//        GRB_TRY( GrB_Vector_nvals(&nvals, frontier) );
-    }
-//    while (nvals > 0);
+        // done if frontier is empty
+        GRB_TRY( GrB_Vector_nvals(&nvals, frontier) );
+    } while (nvals > 0);
 
-//    {//test
-//        printf("compute_parent: %d\n", compute_parent);
-//        printf("compute_level: %d\n", compute_level);
-//    }
-    {
-        GxB_print(l_level, GxB_COMPLETE);
-    }
     //--------------------------------------------------------------------------
     // free workspace and return result
     //--------------------------------------------------------------------------

@@ -117,10 +117,10 @@ int LG_BreadthFirstSearch_SSGrB
 
     if (compute_parent)
     {
-        // use the ANY_SECONDI_INT* semiring: either 32 or 64-bit depending on
-        // the # of nodes in the graph.
-        semiring = (n > INT32_MAX) ?
-            GxB_ANY_SECONDI_INT64 : GxB_ANY_SECONDI_INT32 ;
+//        // use the ANY_SECONDI_INT* semiring: either 32 or 64-bit depending on
+//        // the # of nodes in the graph.
+//        semiring = (n > INT32_MAX) ?
+//            GxB_ANY_SECONDI_INT64 : GxB_ANY_SECONDI_INT32 ;
 
         // create the parent vector.  pi(i) is the parent id of node i
         GRB_TRY (GrB_Vector_new (&pi, int_type, n)) ;
@@ -134,8 +134,8 @@ int LG_BreadthFirstSearch_SSGrB
     }
     else
     {
-        // only the level is needed, use the LAGraph_any_one_bool semiring
-        semiring = LAGraph_any_one_bool ;
+//        // only the level is needed, use the LAGraph_any_one_bool semiring
+//        semiring = LAGraph_any_one_bool ;
 
         // create a sparse boolean vector q, and set q(src) = true
         GRB_TRY (GrB_Vector_new (&q, GrB_BOOL, n)) ;
@@ -143,14 +143,16 @@ int LG_BreadthFirstSearch_SSGrB
     }
 
     /// Added by Zhen Peng on 01/03/2023
-    semiring = GxB_ANY_PAIR_FP64;
+    semiring = GxB_PLUS_TIMES_FP64;
+//    semiring = GxB_ANY_TIMES_FP64;
+//    semiring = GxB_ANY_PAIR_FP64;
 
     if (compute_level)
     {
         // create the level vector. v(i) is the level of node i
         // v (src) = 0 denotes the source node
         GRB_TRY (GrB_Vector_new (&v, int_type, n)) ;
-        GRB_TRY (GxB_set (v, GxB_SPARSITY_CONTROL, GxB_BITMAP + GxB_FULL)) ;
+//        GRB_TRY (GxB_set (v, GxB_SPARSITY_CONTROL, GxB_BITMAP + GxB_FULL)) ;
         GRB_TRY (GrB_Vector_setElement (v, 0, src)) ;
     }
 
@@ -184,6 +186,8 @@ int LG_BreadthFirstSearch_SSGrB
     for (int64_t nvisited = 1, k = 1 ; nvisited < n ; nvisited += nq, k++)
     {
 
+        /// Changed by Zhen Peng on 2/3/2023
+        /// Always use push
 //        //----------------------------------------------------------------------
 //        // select push vs pull
 //        //----------------------------------------------------------------------
@@ -249,8 +253,8 @@ int LG_BreadthFirstSearch_SSGrB
         // q = kth level of the BFS
         //----------------------------------------------------------------------
 
-        int sparsity = do_push ? GxB_SPARSE : GxB_BITMAP ;
-        GRB_TRY (GxB_set (q, GxB_SPARSITY_CONTROL, sparsity)) ;
+//        int sparsity = do_push ? GxB_SPARSE : GxB_BITMAP ;
+//        GRB_TRY (GxB_set (q, GxB_SPARSITY_CONTROL, sparsity)) ;
 
         // mask is pi if computing parent, v if computing just level
         if (do_push)
