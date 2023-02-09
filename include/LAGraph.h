@@ -37,10 +37,10 @@
 // See also the LAGraph_Version utility method, which returns these values.
 // These definitions are derived from LAGraph/CMakeLists.txt.
 
-#define LAGRAPH_DATE "Sept 20, 2022"
+#define LAGRAPH_DATE "Dec 28, 2022"
 #define LAGRAPH_VERSION_MAJOR  1
 #define LAGRAPH_VERSION_MINOR  0
-#define LAGRAPH_VERSION_UPDATE 0
+#define LAGRAPH_VERSION_UPDATE 1
 
 //==============================================================================
 // include files and helper macros
@@ -2514,7 +2514,7 @@ int LAGr_TriangleCount
 /// Added by Zhen Peng on 01/03/2023
 LAGRAPH_PUBLIC
 int LAGr_TriangleCount_with_LU
-  (
+    (
         // output:
         uint64_t *ntriangles,
         // input:
@@ -2524,7 +2524,7 @@ int LAGr_TriangleCount_with_LU
         LAGr_TriangleCount_Method *method,
         LAGr_TriangleCount_Presort *presort,
         char *msg
-) ;
+    ) ;
 
 /// Added by Zhen Peng on 12/28/2022
 
@@ -2550,17 +2550,18 @@ int LAGr_MaskedSpGEMM
         char *msg
 ) ;
 
+
 LAGRAPH_PUBLIC
 int LAGr_MaskedSpGEMM_print_matrix
-(
+    (
 //        // output:
 //        GrB_Matrix C,
-        // input:
-        const LAGraph_Graph G,
-        const LAGraph_Graph M, // Mask
-        LAGr_MaskedSpGEMM_Method *p_method,
+    // input:
+    const LAGraph_Graph G,
+    const LAGraph_Graph M, // Mask
+    LAGr_MaskedSpGEMM_Method *p_method,
 //    LAGr_TriangleCount_Presort *presort,
-        char *msg
+    char *msg
 ) ;
 
 #endif
