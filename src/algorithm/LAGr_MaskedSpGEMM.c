@@ -329,7 +329,12 @@ int LAGr_MaskedSpGEMM
         GrB_Desc_Value val // value to change it to:: 0
       ) ;
    */
-  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
+  /// Changed by Zhen Peng on 4/12/2023
+  /// Turn on the sorting because COMET uses sorting in SpGEMM.
+//  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 1);
+//  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
+//  GxB_Desc_set(GrB_DESC_S, GxB_SORT, 0);
+  GxB_Desc_set(GrB_DESC_S, GxB_SORT, 1);
 
   switch (method)
   {

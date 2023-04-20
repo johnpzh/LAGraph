@@ -473,10 +473,10 @@ int main (int argc, char **argv)
   int Nthreads [20] = { 0, THREAD_LIST } ;
 
   /// Changed by Zhen Peng on 12/28/2022
-//  int nthreads_max, nthreads_outer, nthreads_inner ;
-//  LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
-//  nthreads_max = nthreads_outer * nthreads_inner ;
-  int nthreads_max = 1;
+  int nthreads_max, nthreads_outer, nthreads_inner ;
+  LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
+  nthreads_max = nthreads_outer * nthreads_inner ;
+//  int nthreads_max = 1;
   if (Nthreads [1] == 0)
   {
     // create thread list automatically

@@ -1,0 +1,457 @@
+include: SuiteSparse:GraphBLAS v7.3.2 [Nov 12, 2022]
+library: SuiteSparse:GraphBLAS v7.3.2 [Nov 12, 2022]
+nthreads_max: 1
+threads to test:  1
+matrix: /Users/peng599/local/react-eval/matrices/shipsec1/shipsec1.mtx
+[.mtx]
+Reading matrix market file: /Users/peng599/local/react-eval/matrices/shipsec1/shipsec1.mtx
+ [ GrB_Matrix_build_FP64 (build) (hyper to sparse) 
+   0.429 sec ]
+ [ GrB_transpose (transpose) (12-thread atomic bucket transpose) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.066 sec ]
+ [ GrB_eWiseMult emult:(S<.>=S.*S) (iso emult) 
+   0.0175 sec ]
+ [ GrB_Matrix_nvals 
+   9.54e-07 sec ]
+ [ GrB_Matrix_nvals 
+   0 sec ]
+(iso wait:matrix 0 zombies, 1 pending) (hyper to sparse) (wait:matrix 0 zombies, 1 pending) add:(S<.>=S+H) (wait:matrix 0 zombies, 1 pending) add:(S<.>=S+H) (sparse to bitmap) read time: 2.80443
+ [ GrB_assign (C iso assign) (pending: 0) Method 21: (C full) = scalar 
+   4.01e-05 sec ]
+ [ GrB_mxv C=A'*B, dot_product (dot2) (nthreads: 12 naslice 384 nbslice 1) (dot F = S'*F) 
+   0.000198 sec ]
+ [ GrB_assign (C iso assign) (pending: 0) Method 21: (C full) = scalar 
+   1.41e-05 sec ]
+ [ GrB_mxv C=A'*B, dot_product (dot2) (nthreads: 12 naslice 384 nbslice 1) (dot F = S'*F) 
+   0.000332 sec ]
+
+------------------------------- threads:  1
+(iso wait:matrix 0 zombies, 1 pending) (hyper to sparse)  [ GrB_assign (C iso assign) (pending: 0) Method 05e: (C empty)<M,struct> = scalar 
+   2.1e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 42 mwork 1 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000612 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 41 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.000115 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 1938 mwork 42 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000134 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 72 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   6.91e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 3672 mwork 114 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000158 sec ]
+ [ GrB_Vector_nvals 
+   1.19e-06 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 108 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   7.61e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 4428 mwork 222 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000151 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 60 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   7.1e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 2628 mwork 282 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000136 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 60 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   7.01e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 2736 mwork 342 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00014 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 84 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   7.49e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 3816 mwork 426 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00018 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 108 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   8.39e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 4356 mwork 534 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000148 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 78 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   7.8e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 3420 mwork 612 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000144 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 102 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   7.99e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 4644 mwork 714 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00016 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 126 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   9.18e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 6012 mwork 840 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000188 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 162 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.000102 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 8424 mwork 1002 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000226 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 246 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.00014 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 12096 mwork 1248 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00027 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 264 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.000156 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 14256 mwork 1512 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000312 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 378 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.00019 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 19476 mwork 1890 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000385 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 414 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.00023 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 21600 mwork 2304 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000414 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 402 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.000235 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 24120 mwork 2706 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000497 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 624 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.000309 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 33804 mwork 3330 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000606 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 660 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.000344 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 34560 mwork 3990 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000605 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 624 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.000362 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 38268 mwork 4614 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000702 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 900 pending) (build) (generic build with typecast) add:(S<.>=S+H) 
+   0.000472 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!S} = S*S) axbwork 49536 mwork 5514 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.000857 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign (pending: 0) Method 05: C(:,:)<M> = scalar ; no S (wait:matrix 0 zombies, 966 pending) (build) (generic build with typecast) add:(S<.>=S+H) (sparse to bitmap) 
+   0.000614 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 53310 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00208 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   4.2e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 58728 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00173 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   3e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 71880 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00188 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   3.1e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 76050 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.002 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   3.41e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 84228 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00218 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   5.51e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 106842 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00263 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   4.6e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 111300 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.0025 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   4.2e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 109068 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.0026 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   4.2e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 126684 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.0028 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   4.1e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 124080 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00284 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   4.32e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 135702 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00312 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   5.2e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 155514 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00349 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   5.82e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 149982 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00349 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   5.2e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 162588 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00369 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   5.7e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 194232 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00423 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   7.1e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 221154 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00467 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.79e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 247044 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00476 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.01e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 189288 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00425 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.6e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 188454 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00455 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.1e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 196062 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00456 sec ]
+ [ GrB_Vector_nvals 
+   1.19e-06 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.51e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 220422 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00494 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.58e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 213066 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00488 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   9.8e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 214950 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00515 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   7.41e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 244590 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00536 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.7e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 239250 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00567 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   7.39e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 275892 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (sparse to bitmap) 
+   0.00606 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit2:whole C<M,bitmap,struct> = scalar 
+   0.000657 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*B) axbwork 465270 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00914 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   8.89e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 306342 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.0066 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   8.2e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 303852 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (sparse to bitmap) 
+   0.00656 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit2:whole C<M,bitmap,struct> = scalar 
+   0.000647 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*B) axbwork 479310 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00959 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   9.08e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 310866 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00668 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   7.8e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 248148 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00645 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   7.8e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 268008 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00654 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   7.3e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 244080 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.0063 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.7e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 221010 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00623 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   6.99e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 229974 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00616 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   5.89e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 202482 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.0059 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   5.7e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 151854 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00506 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   3.41e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 86706 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00441 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   3.5e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 62370 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00412 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   2.5e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 42648 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00344 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   1.72e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 31686 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00256 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   1.41e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 26556 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00256 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   1.19e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 19410 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00255 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   1.19e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 15414 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00252 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   1.1e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 10248 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.0025 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   1.22e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 5442 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00274 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   1.31e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 3912 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00243 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   1e-05 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 1764 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) (wait:matrix 0 zombies, 0 pending, jumbled) 
+   0.00227 sec ]
+ [ GrB_Vector_nvals 
+   0 sec ]
+ [ GrB_assign Method:bit4:whole C<M,struct> = scalar 
+   9.06e-06 sec ]
+ [ GrB_vxm C<!M>=A*B, saxpy (S{!B} = S*S) axbwork 816 (use GxB_AxB_GUSTAVSON mask) (nthreads 1 coarse: 1) (sparse saxpy) (generic C=A*B) (generic C=A*B) 
+   0.00116 sec ]
+ [ GrB_Vector_nvals 
+   9.54e-07 sec ]
+current_level: 72
+parent and level  pushpull trial:  0 threads:  1 src: 1717     0.2276 sec
+Avg: BFS pushpull parent only  threads   1:   0.227594 sec: /Users/peng599/local/react-eval/matrices/shipsec1/shipsec1.mtx

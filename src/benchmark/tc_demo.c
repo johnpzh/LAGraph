@@ -112,10 +112,10 @@ int main (int argc, char **argv)
   int Nthreads [20] = { 0, THREAD_LIST } ;
 
   /// Changed by Zhen Peng on 01/03/2022
-//    int nthreads_max, nthreads_outer, nthreads_inner ;
-//    LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
-//    nthreads_max = nthreads_outer * nthreads_inner ;
-  int nthreads_max = 1;
+    int nthreads_max, nthreads_outer, nthreads_inner ;
+    LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
+    nthreads_max = nthreads_outer * nthreads_inner ;
+//  int nthreads_max = 1;
   if (Nthreads [1] == 0)
   {
     // create thread list automatically
@@ -252,7 +252,8 @@ int main (int argc, char **argv)
 
 
 
-  for (int method = 1; method <= 12 ; method++)
+  for (int method = 1; method <= 6 ; method++)
+//  for (int method = 1; method <= 12 ; method++)
 //  for (int method = 1; method <= 7 ; method++)
 //    for (int method = 7; method >= 1 ; method--)
 //    int methods[] = {7, 1}; // 7 is no-masking, 1 is masking.

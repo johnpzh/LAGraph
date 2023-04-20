@@ -464,8 +464,8 @@ int main (int argc, char **argv)
   bool burble = false ;
   demo_init (burble) ;
 
-  int ntrials = 3 ;
-//  int ntrials = 10 ;
+//  int ntrials = 3 ;
+  int ntrials = 10 ;
   // ntrials = 1 ;        // HACK
   printf ("# of trials: %d\n", ntrials) ;
 
@@ -473,10 +473,10 @@ int main (int argc, char **argv)
   int Nthreads [20] = { 0, THREAD_LIST } ;
 
   /// Changed by Zhen Peng on 12/28/2022
-//  int nthreads_max, nthreads_outer, nthreads_inner ;
-//  LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
-//  nthreads_max = nthreads_outer * nthreads_inner ;
-  int nthreads_max = 1;
+  int nthreads_max, nthreads_outer, nthreads_inner ;
+  LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
+  nthreads_max = nthreads_outer * nthreads_inner ;
+//  int nthreads_max = 1;
   if (Nthreads [1] == 0)
   {
     // create thread list automatically
@@ -514,12 +514,12 @@ int main (int argc, char **argv)
   GRB_TRY (GrB_Matrix_nrows (&n, G->A)) ;
   GRB_TRY (GrB_Matrix_nvals (&nvals, G->A)) ;
 
-  LAGraph_Graph M;
+//  LAGraph_Graph M;
+////  LAGRAPH_TRY (readmask (&M, NULL,
+////                            true, true, true, NULL, false, argc, argv)) ;
 //  LAGRAPH_TRY (readmask (&M, NULL,
-//                            true, true, true, NULL, false, argc, argv)) ;
-  LAGRAPH_TRY (readmask (&M, NULL,
-                            false, false, false, GrB_FP64, false, argc, argv)) ;
-  LAGRAPH_TRY (LAGraph_Graph_Print (M, LAGraph_SHORT, stdout, msg)) ;
+//                            false, false, false, GrB_FP64, false, argc, argv)) ;
+//  LAGRAPH_TRY (LAGraph_Graph_Print (M, LAGraph_SHORT, stdout, msg)) ;
 
   //--------------------------------------------------------------------------
   // triangle counting
@@ -583,77 +583,83 @@ int main (int argc, char **argv)
 //    for (int method = 1; method <= 7 ; method++)
 //  for (int method = 7; method >= 1 ; method--)
 //  for (int method = 1; method <= 3; ++method)
-  { /// No Mask
-    LAGr_MaskedSpGEMM_Method method = LAGr_MaskedSpGEMM_NoMask;
-    // for (int sorting = -1 ; sorting <= 2 ; sorting++)
 
-//    int sorting = LAGr_TriangleCount_AutoSort ; // just use auto-sort
-    {
-//      printf ("\nMethod: ") ; print_method (stdout, method, sorting) ;
-//            if (n == 134217726 && method < 5)
-//            {
-//                printf ("kron fails on method %d; skipped\n", method) ;
-//                continue ;
-//            }
-//            if (n != 134217728 && method < 5)
-//            {
-//                printf ("all but urand is slow with method %d: skipped\n",
-//                        method) ;
-//                continue ;
-//            }
+/// No Mask
+//  { /// No Mask
+//    LAGr_MaskedSpGEMM_Method method = LAGr_MaskedSpGEMM_NoMask;
+//    // for (int sorting = -1 ; sorting <= 2 ; sorting++)
+//
+////    int sorting = LAGr_TriangleCount_AutoSort ; // just use auto-sort
+//    {
+////      printf ("\nMethod: ") ; print_method (stdout, method, sorting) ;
+////            if (n == 134217726 && method < 5)
+////            {
+////                printf ("kron fails on method %d; skipped\n", method) ;
+////                continue ;
+////            }
+////            if (n != 134217728 && method < 5)
+////            {
+////                printf ("all but urand is slow with method %d: skipped\n",
+////                        method) ;
+////                continue ;
+////            }
+//
+//      for (int t = 1 ; t <= nt ; t++)
+//      {
+//        int nthreads = Nthreads [t] ;
+//        if (nthreads > nthreads_max) continue ;
+//        LAGRAPH_TRY (LAGraph_SetNumThreads (1, nthreads, msg)) ;
+//        GrB_Index nt2 ;
+//        double ttot = 0, ttrial [100] ;
+////        LAGr_TriangleCount_Presort p ;
+//        LAGr_MaskedSpGEMM_Method m ;
+//        for (int trial = 0 ; trial < ntrials ; trial++)
+//        {
+////          {
+////            printf("trial: %d\n", trial); //test
+////          }
+//          double tt = LAGraph_WallClockTime ( ) ;
+//          m = method ;
+////          p = sorting ;
+//          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, G, &m, msg));
+////          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, M, &m, msg));
+////          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, &m, &p, msg));
+//          ttrial [trial] = LAGraph_WallClockTime ( ) - tt ;
+//          ttot += ttrial [trial] ;
+//          printf ("trial %2d: %12.6f sec rate %6.2f  # triangles: "
+//                  "%g\n", trial, ttrial [trial],
+//                  1e-6 * nvals / ttrial [trial], (double) nt2) ;
+//        }
+//        ttot = ttot / ntrials ;
+//        printf ("nthreads: %3d time: %12.6f rate: %6.2f", nthreads,
+//                ttot, 1e-6 * nvals / ttot) ;
+//        printf ("   # of triangles: %" PRId64 " presort: %d\n",
+//                ntriangles, (int) 0) ;
+//        if (nt2 != ntriangles)
+//        {
+//          printf ("Test failure!\n") ;
+//          abort ( ) ;
+//        }
+//        fprintf (stderr, "\nMethod used: ") ;
+//        print_method (stderr, m, presort) ;
+//        fprintf (stderr, "Avg: MaskedSpGEEMM method%d %3d: %10.3f sec: %s\n",
+//                 method, nthreads, ttot, matrix_name) ;
+////        fprintf (stderr, "Avg: TC method%d.%d %3d: %10.3f sec: %s\n",
+////                 method, sorting, nthreads, ttot, matrix_name) ;
+//
+//        if (ttot < t_best)
+//        {
+//          t_best = ttot ;
+//          method_best = method ;
+//          nthreads_best = nthreads ;
+////          sorting_best = sorting ;
+//        }
+//      }
+//    }
+//  }
+/// End No Mask
 
-      for (int t = 1 ; t <= nt ; t++)
-      {
-        int nthreads = Nthreads [t] ;
-        if (nthreads > nthreads_max) continue ;
-        LAGRAPH_TRY (LAGraph_SetNumThreads (1, nthreads, msg)) ;
-        GrB_Index nt2 ;
-        double ttot = 0, ttrial [100] ;
-//        LAGr_TriangleCount_Presort p ;
-        LAGr_MaskedSpGEMM_Method m ;
-        for (int trial = 0 ; trial < ntrials ; trial++)
-        {
-//          {
-//            printf("trial: %d\n", trial); //test
-//          }
-          double tt = LAGraph_WallClockTime ( ) ;
-          m = method ;
-//          p = sorting ;
-          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, M, &m, msg));
-//          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, &m, &p, msg));
-          ttrial [trial] = LAGraph_WallClockTime ( ) - tt ;
-          ttot += ttrial [trial] ;
-          printf ("trial %2d: %12.6f sec rate %6.2f  # triangles: "
-                  "%g\n", trial, ttrial [trial],
-                  1e-6 * nvals / ttrial [trial], (double) nt2) ;
-        }
-        ttot = ttot / ntrials ;
-        printf ("nthreads: %3d time: %12.6f rate: %6.2f", nthreads,
-                ttot, 1e-6 * nvals / ttot) ;
-        printf ("   # of triangles: %" PRId64 " presort: %d\n",
-                ntriangles, (int) 0) ;
-        if (nt2 != ntriangles)
-        {
-          printf ("Test failure!\n") ;
-          abort ( ) ;
-        }
-        fprintf (stderr, "\nMethod used: ") ;
-        print_method (stderr, m, presort) ;
-        fprintf (stderr, "Avg: MaskedSpGEEMM method%d %3d: %10.3f sec: %s\n",
-                 method, nthreads, ttot, matrix_name) ;
-//        fprintf (stderr, "Avg: TC method%d.%d %3d: %10.3f sec: %s\n",
-//                 method, sorting, nthreads, ttot, matrix_name) ;
-
-        if (ttot < t_best)
-        {
-          t_best = ttot ;
-          method_best = method ;
-          nthreads_best = nthreads ;
-//          sorting_best = sorting ;
-        }
-      }
-    }
-  }
+/// Use Mask
   { /// Use Mask
     LAGr_MaskedSpGEMM_Method method = LAGr_MaskedSpGEMM_UseMask;
     // for (int sorting = -1 ; sorting <= 2 ; sorting++)
@@ -690,7 +696,8 @@ int main (int argc, char **argv)
           double tt = LAGraph_WallClockTime ( ) ;
           m = method ;
 //          p = sorting ;
-          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, M, &m, msg));
+          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, G, &m, msg));
+//          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, M, &m, msg));
 //          LAGRAPH_TRY(LAGr_MaskedSpGEMM (&nt2, G, &m, &p, msg));
           ttrial [trial] = LAGraph_WallClockTime ( ) - tt ;
           ttot += ttrial [trial] ;
@@ -725,6 +732,7 @@ int main (int argc, char **argv)
       }
     }
   }
+/// End Use Mask
 
   printf ("\nBest method: ") ;
   print_method (stdout, method_best, presort) ;

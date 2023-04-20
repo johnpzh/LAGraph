@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# LAGraph, (c) 2021 by The LAGraph Contributors, All Rights Reserved.
+# SPDX-License-Identifier: BSD-2-Clause
+# See additional acknowledgments in the LICENSE file,
+# or contact permission@sei.cmu.edu for the full terms.
+
+# do_gap_tc: run the GAP benchmarks for Triangle Counting
+
+# Usage:
+#
+#   To run using *.mtx format, with the files in ../../../GAP:
+#
+#       ./do_gap_tc > myoutput.txt
+#
+#   To run using binary *.grb format, with the files in ../../../GAP:
+#
+#       ./do_gap_tc grb > myoutput.txt
+#
+#   To run using binary *.mtx format, with the files in /my/stuff/GAP
+#
+#       ./do_gap_tc mtx /my/stuff/GAP > myoutput.txt
+#
+#   To run using binary *.mtx format, with the files in /my/stuff/GAP
+#
+#       ./do_gap_tc grb /my/stuff/GAP > myoutput.txt
+
+echo " "
+echo "======================================================================"
+echo "GAP benchmarks using LAGraph+GraphBLAS: Mask SpGEMM"
+echo "======================================================================"
+
+#if [ -z "$1" ]; then KIND="mtx" ; else KIND=$1 ; fi
+#echo "Matrix input file format: " $KIND
+#
+#if [ -z "$2" ]; then GAP="../../../GAP" ; else GAP=$2 ; fi
+#echo "GAP matrices located in:  " $GAP
+#
+##../../build/src/benchmark/tc_demo $GAP/GAP-kron/GAP-kron.$KIND
+##../../build/src/benchmark/tc_demo $GAP/GAP-urand/GAP-urand.$KIND
+##../../build/src/benchmark/tc_demo $GAP/GAP-twitter/GAP-twitter.$KIND
+##../../build/src/benchmark/tc_demo $GAP/GAP-web/GAP-web.$KIND
+#../../build/src/benchmark/mxm_demo $GAP/GAP-road/GAP-road.$KIND
+
+#matrices=("bcsstk17" "bcsstk29" "pdb1HYS" "cant" "rma10" "consph" \
+#                   "shipsec1" "pwtk" "cop20k_A" "mac_econ_fwd500" "scircuit")
+#matrices=("bcsstk17" \
+#          "pdb1HYS" \
+#          "rma10" \
+#          "cant" \
+#          "consph" \
+#          "shipsec1" \
+#          "cop20k_A" \
+#          "scircuit")
+#matrices=("bcsstk17" \
+#          "pdb1HYS" \
+#          "rma10" \
+#          "cant" \
+#          "consph" \
+#          "pwtk" \
+#          "shipsec1" \
+#          "cop20k_A" \
+#          "scircuit" \
+#          "mac_econ_fwd500")
+
+#for mtx in "${matrices[@]}"; do
+#
+#  ../../cmake-build-clang/src/benchmark/mxm_demo \
+#    "/qfs/people/peng599/pppp/clion/react-eval_mac/matrices/${mtx}/${mtx}.mtx"
+#
+#done
+
+large_matrices=("com-Orkut" "com-LiveJournal")
+
+for mtx in "${large_matrices[@]}"; do
+
+  ../../cmake-build-clang/src/benchmark/mxm_demo \
+    "/qfs/people/peng599/data/${mtx}/${mtx}.mtx"
+
+done

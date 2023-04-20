@@ -105,7 +105,7 @@ int LG_BreadthFirstSearch_vanilla
         // create a sparse boolean vector frontier, and set frontier(src) = true
         GRB_TRY (GrB_Vector_new(&frontier, GrB_BOOL, n)) ;
 //        GRB_TRY (GrB_assign(frontier, NULL, NULL, false, GrB_ALL, n, NULL)) ; /// Added by Zhen Peng to make frontier dense
-        GRB_TRY (GrB_Vector_setElement(frontier, false, src)) ;
+        GRB_TRY (GrB_Vector_setElement(frontier, true, src)) ;
 //        {//test
 //            GRB_TRY (GrB_Vector_setElement(frontier, false, 3)) ;
 //            GxB_print(frontier, GxB_COMPLETE);
@@ -113,7 +113,7 @@ int LG_BreadthFirstSearch_vanilla
     }
 
     /// Changed by Zhen Peng on 02/09/2023
-    semiring = GxB_ANY_PAIR_BOOL;
+//    semiring = GxB_ANY_PAIR_BOOL;
 //    semiring = GxB_PLUS_TIMES_FP64;
     ramp = GrB_ROWINDEX_INT64;
 
@@ -122,7 +122,7 @@ int LG_BreadthFirstSearch_vanilla
         // create the level vector. v(i) is the level of node i
         // v (src) = 0 denotes the source node
         GRB_TRY (GrB_Vector_new(&l_level, int_type, n)) ;
-        GRB_TRY (GrB_assign(l_level, NULL, NULL, 0, GrB_ALL, n, NULL)) ; /// Added by Zhen Peng to make l_level dense
+//        GRB_TRY (GrB_assign(l_level, NULL, NULL, 0, GrB_ALL, n, NULL)) ; /// Added by Zhen Peng to make l_level dense
     }
 
     //--------------------------------------------------------------------------
@@ -142,28 +142,28 @@ int LG_BreadthFirstSearch_vanilla
     GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
 
     // parent BFS
-//    do
-    for (nvals = 1; nvals <= n; ++nvals)
+    do
+//    for (nvals = 1; nvals <= n; ++nvals)
     {
-        {// test
-            printf("#########\n");
-            printf("nvals: %llu\n", nvals);
-            printf("frontier:\n");
-            GxB_print(frontier, GxB_COMPLETE);
-            printf("l_level:\n");
-            GxB_print(l_level, GxB_COMPLETE);
-        }
+//        {// test
+//            printf("#########\n");
+//            printf("nvals: %llu\n", nvals);
+//            printf("frontier:\n");
+//            GxB_print(frontier, GxB_COMPLETE);
+//            printf("l_level:\n");
+//            GxB_print(l_level, GxB_COMPLETE);
+//        }
         if (compute_level)
         {
             // assign levels: l_level<s(frontier)> = current_level
             GRB_TRY( GrB_assign(l_level, frontier, GrB_NULL,
                                 current_level, GrB_ALL, n, GrB_DESC_S) );
 
-            {
-                printf("l_level2:\n");
-                GxB_print(l_level, GxB_COMPLETE);
-//                return 0;
-            }
+//            {// test
+//                printf("l_level2:\n");
+//                GxB_print(l_level, GxB_COMPLETE);
+////                return 0;
+//            }
 
             ++current_level;
         }
@@ -187,17 +187,20 @@ int LG_BreadthFirstSearch_vanilla
 
         /// Changed by Zhen Peng on 02/09/2023
 //        // done if frontier is empty
-//        GRB_TRY( GrB_Vector_nvals(&nvals, frontier) );
+        GRB_TRY( GrB_Vector_nvals(&nvals, frontier) );
     }
-//    while (nvals > 0);
+    while (nvals > 0);
 
 //    {//test
 //        printf("compute_parent: %d\n", compute_parent);
 //        printf("compute_level: %d\n", compute_level);
 //    }
-    {
-        GxB_print(l_level, GxB_COMPLETE);
-    }
+//    {//test
+//        GxB_print(l_level, GxB_COMPLETE);
+//    }
+//    {//test
+//        printf("current_level: %llu\n", current_level);
+//    }
     //--------------------------------------------------------------------------
     // free workspace and return result
     //--------------------------------------------------------------------------

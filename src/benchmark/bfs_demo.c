@@ -49,6 +49,7 @@ int main (int argc, char **argv)
     GrB_Matrix SourceNodes = NULL ;
 
     // start GraphBLAS and LAGraph
+//    bool burble = true ; /// Changed by Zhen Peng on 02/14/2023
     bool burble = false ;
     demo_init (burble) ;
 
@@ -117,8 +118,8 @@ int main (int argc, char **argv)
     GRB_TRY (GrB_Matrix_nrows (&ntrials, SourceNodes)) ;
 
     /// Changed by Zhen Peng on 01/03/2023
-    ntrials = 1;
-//    ntrials = 10;
+//    ntrials = 1;
+    ntrials = 10;
 
     // HACK
     // ntrials = 4 ;
@@ -145,7 +146,8 @@ int main (int argc, char **argv)
 
     /// Added by Zhen Peng on 01/06/2023
     /// Always use source 0
-    int64_t src = 0;
+//    int64_t src = 0;
+    int64_t src = 1717;
 
     for (int tt = 1 ; tt <= nt ; tt++)
     {
@@ -207,8 +209,8 @@ int main (int argc, char **argv)
 
                 GrB_free (&parent) ;
 
-                /// Added by Zhen Peng on 01/03/2023
-                GrB_free(&level);
+//                /// Added by Zhen Peng on 01/03/2023
+//                GrB_free(&level);
 
                 //--------------------------------------------------------------
                 // BFS to compute just level

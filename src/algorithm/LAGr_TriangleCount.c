@@ -266,8 +266,8 @@ int LAGr_TriangleCount_with_LU
 //    GRB_TRY (GrB_Matrix_new (&C, GrB_INT64, n, n)) ;
 #if LAGRAPH_SUITESPARSE
   /// Changed to GxB_PLUS_TIMES_FP64 by Zhen Peng on 01/31/2023
-    GrB_Semiring semiring = GxB_PLUS_TIMES_FP64 ;
-//  GrB_Semiring semiring = GxB_PLUS_PAIR_FP64 ;
+//    GrB_Semiring semiring = GxB_PLUS_TIMES_FP64 ;
+  GrB_Semiring semiring = GxB_PLUS_PAIR_FP64 ;   /// Changed to this on 03/24/2023
 //    GrB_Semiring semiring = GxB_PLUS_PAIR_INT64 ;
 #else
   GrB_Semiring semiring = LAGraph_plus_one_int64 ;
@@ -610,8 +610,8 @@ int LAGr_TriangleCount
 //    GRB_TRY (GrB_Matrix_new (&C, GrB_INT64, n, n)) ;
 #if LAGRAPH_SUITESPARSE
   /// Changed to GxB_PLUS_TIMES_FP64 by Zhen Peng on 01/31/2023
-  GrB_Semiring semiring = GxB_PLUS_TIMES_FP64 ;
-//  GrB_Semiring semiring = GxB_PLUS_PAIR_FP64 ;
+//  GrB_Semiring semiring = GxB_PLUS_TIMES_FP64 ;
+  GrB_Semiring semiring = GxB_PLUS_PAIR_FP64 ;   /// Changed to this on 03/24/2023
 //    GrB_Semiring semiring = GxB_PLUS_PAIR_INT64 ;
 #else
   GrB_Semiring semiring = LAGraph_plus_one_int64 ;

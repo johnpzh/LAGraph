@@ -1,0 +1,149 @@
+
+Method used: Burkhardt: sum ((A^2) .* A) / 6 auto-sort
+Avg: TC method1.0   1:      0.145 sec: /Users/peng599/local/react-eval/matrices/scircuit/scircuit.mtx
+
+Method used: Cohen:     sum ((L*U) .* A) / 2 auto-sort
+Avg: TC method2.0   1:      0.067 sec: /Users/peng599/local/react-eval/matrices/scircuit/scircuit.mtx
+
+Method used: Sandia_LL: sum ((L*L) .* L)     auto-sort
+Avg: TC method3.0   1:      0.039 sec: /Users/peng599/local/react-eval/matrices/scircuit/scircuit.mtx
+
+Method used: Sandia_UU: sum ((U*U) .* U)     auto-sort
+Avg: TC method4.0   1:      0.040 sec: /Users/peng599/local/react-eval/matrices/scircuit/scircuit.mtx
+
+Method used: Sandia_LUT: sum ((L*U') .* L)   auto-sort
+Avg: TC method5.0   1:      0.033 sec: /Users/peng599/local/react-eval/matrices/scircuit/scircuit.mtx
+
+Method used: Sandia_ULT: sum ((U*L') .* U)   auto-sort
+Avg: TC method6.0   1:      0.034 sec: /Users/peng599/local/react-eval/matrices/scircuit/scircuit.mtx
+include: SuiteSparse:GraphBLAS v7.3.2 [Nov 12, 2022]
+library: SuiteSparse:GraphBLAS v7.3.2 [Nov 12, 2022]
+# of trials: 10
+threads to test:  1
+matrix: /Users/peng599/local/react-eval/matrices/scircuit/scircuit.mtx
+[.mtx]
+Reading matrix market file: /Users/peng599/local/react-eval/matrices/scircuit/scircuit.mtx
+forcing G-> to be symmetric (via A = A+A')
+read time: 0.709113
+Graph: kind: undirected, nodes: 170998 entries: 788064 type: bool
+  structural symmetry: symmetric  self-edges: 0
+  adjacency matrix: GrB_BOOL matrix: 170998-by-170998 entries: 788064
+    (0, 12048)   1
+    (0, 18842)   1
+    (0, 19270)   1
+    (0, 23487)   1
+    (0, 24987)   1
+    (0, 27266)   1
+    (0, 27956)   1
+    (0, 28481)   1
+    (0, 72256)   1
+    (0, 72375)   1
+    (0, 72493)   1
+    (0, 72933)   1
+    (0, 85183)   1
+    (0, 86303)   1
+    (0, 89408)   1
+    (0, 90939)   1
+    (0, 103000)   1
+    (0, 103272)   1
+    (0, 126841)   1
+    (1, 126840)   1
+    (1, 170977)   1
+    (2, 3)   1
+    (2, 170977)   1
+    (3, 2)   1
+    (3, 126841)   1
+    (4, 12048)   1
+    (4, 18842)   1
+    (4, 19270)   1
+    (4, 23487)   1
+    (4, 27266)   1
+    (4, 27956)   1
+    (4, 72256)   1
+    ...
+
+warmup method: Sandia_ULT: sum ((U*L') .* U)   auto-sort
+# of triangles: 180615
+Sandia_ULT: sum ((U*L') .* U)   auto-sort
+nthreads:   1 time:     0.010798 rate:  72.98 (Sandia_ULT, one trial)
+
+Method: Burkhardt: sum ((A^2) .* A) / 6 auto-sort
+trial  0:     0.166736 sec rate   4.73  # triangles: 180615
+trial  1:     0.142693 sec rate   5.52  # triangles: 180615
+trial  2:     0.144903 sec rate   5.44  # triangles: 180615
+trial  3:     0.139057 sec rate   5.67  # triangles: 180615
+trial  4:     0.143551 sec rate   5.49  # triangles: 180615
+trial  5:     0.156555 sec rate   5.03  # triangles: 180615
+trial  6:     0.140031 sec rate   5.63  # triangles: 180615
+trial  7:     0.138097 sec rate   5.71  # triangles: 180615
+trial  8:     0.144486 sec rate   5.45  # triangles: 180615
+trial  9:     0.134844 sec rate   5.84  # triangles: 180615
+nthreads:   1 time:     0.145095 rate:   5.43   # of triangles: 180615 presort: 0
+
+Method: Cohen:     sum ((L*U) .* A) / 2 auto-sort
+trial  0:     0.066317 sec rate  11.88  # triangles: 180615
+trial  1:     0.063871 sec rate  12.34  # triangles: 180615
+trial  2:     0.062977 sec rate  12.51  # triangles: 180615
+trial  3:     0.063617 sec rate  12.39  # triangles: 180615
+trial  4:     0.062126 sec rate  12.68  # triangles: 180615
+trial  5:     0.069025 sec rate  11.42  # triangles: 180615
+trial  6:     0.084898 sec rate   9.28  # triangles: 180615
+trial  7:     0.073708 sec rate  10.69  # triangles: 180615
+trial  8:     0.064574 sec rate  12.20  # triangles: 180615
+trial  9:     0.062249 sec rate  12.66  # triangles: 180615
+nthreads:   1 time:     0.067336 rate:  11.70   # of triangles: 180615 presort: 0
+
+Method: Sandia_LL: sum ((L*L) .* L)     auto-sort
+trial  0:     0.039302 sec rate  20.05  # triangles: 180615
+trial  1:     0.038986 sec rate  20.21  # triangles: 180615
+trial  2:     0.038821 sec rate  20.30  # triangles: 180615
+trial  3:     0.038170 sec rate  20.65  # triangles: 180615
+trial  4:     0.038125 sec rate  20.67  # triangles: 180615
+trial  5:     0.038598 sec rate  20.42  # triangles: 180615
+trial  6:     0.038322 sec rate  20.56  # triangles: 180615
+trial  7:     0.038214 sec rate  20.62  # triangles: 180615
+trial  8:     0.038317 sec rate  20.57  # triangles: 180615
+trial  9:     0.039560 sec rate  19.92  # triangles: 180615
+nthreads:   1 time:     0.038642 rate:  20.39   # of triangles: 180615 presort: 0
+
+Method: Sandia_UU: sum ((U*U) .* U)     auto-sort
+trial  0:     0.041925 sec rate  18.80  # triangles: 180615
+trial  1:     0.039772 sec rate  19.81  # triangles: 180615
+trial  2:     0.039383 sec rate  20.01  # triangles: 180615
+trial  3:     0.039124 sec rate  20.14  # triangles: 180615
+trial  4:     0.039498 sec rate  19.95  # triangles: 180615
+trial  5:     0.039434 sec rate  19.98  # triangles: 180615
+trial  6:     0.038953 sec rate  20.23  # triangles: 180615
+trial  7:     0.039578 sec rate  19.91  # triangles: 180615
+trial  8:     0.038948 sec rate  20.23  # triangles: 180615
+trial  9:     0.039282 sec rate  20.06  # triangles: 180615
+nthreads:   1 time:     0.039590 rate:  19.91   # of triangles: 180615 presort: 0
+
+Method: Sandia_LUT: sum ((L*U') .* L)   auto-sort
+trial  0:     0.034783 sec rate  22.66  # triangles: 180615
+trial  1:     0.033346 sec rate  23.63  # triangles: 180615
+trial  2:     0.032629 sec rate  24.15  # triangles: 180615
+trial  3:     0.035594 sec rate  22.14  # triangles: 180615
+trial  4:     0.033220 sec rate  23.72  # triangles: 180615
+trial  5:     0.032699 sec rate  24.10  # triangles: 180615
+trial  6:     0.032701 sec rate  24.10  # triangles: 180615
+trial  7:     0.032215 sec rate  24.46  # triangles: 180615
+trial  8:     0.032314 sec rate  24.39  # triangles: 180615
+trial  9:     0.032561 sec rate  24.20  # triangles: 180615
+nthreads:   1 time:     0.033206 rate:  23.73   # of triangles: 180615 presort: 0
+
+Method: Sandia_ULT: sum ((U*L') .* U)   auto-sort
+trial  0:     0.033908 sec rate  23.24  # triangles: 180615
+trial  1:     0.033650 sec rate  23.42  # triangles: 180615
+trial  2:     0.033001 sec rate  23.88  # triangles: 180615
+trial  3:     0.033259 sec rate  23.69  # triangles: 180615
+trial  4:     0.033253 sec rate  23.70  # triangles: 180615
+trial  5:     0.033455 sec rate  23.56  # triangles: 180615
+trial  6:     0.033114 sec rate  23.80  # triangles: 180615
+trial  7:     0.034025 sec rate  23.16  # triangles: 180615
+trial  8:     0.034171 sec rate  23.06  # triangles: 180615
+trial  9:     0.033660 sec rate  23.41  # triangles: 180615
+nthreads:   1 time:     0.033550 rate:  23.49   # of triangles: 180615 presort: 0
+
+Best method: Sandia_LUT: sum ((L*U') .* L)   auto-sort
+nthreads:   1 time:     0.033206 rate:  23.73

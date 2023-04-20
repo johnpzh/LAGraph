@@ -1,0 +1,21 @@
+include: SuiteSparse:GraphBLAS v7.3.2 [Nov 12, 2022]
+library: SuiteSparse:GraphBLAS v7.3.2 [Nov 12, 2022]
+nthreads_max: 1
+threads to test:  1
+matrix: /Users/peng599/local/data/com-LiveJournal/com-LiveJournal.mtx
+[.mtx]
+Reading matrix market file: /Users/peng599/local/data/com-LiveJournal/com-LiveJournal.mtx
+read time: 16.7721
+
+------------------------------- threads:  1
+parent and level  pushpull trial:  0 threads:  1 src: 0     7.0827 sec
+parent and level  pushpull trial:  1 threads:  1 src: 0     6.0639 sec
+parent and level  pushpull trial:  2 threads:  1 src: 0     6.0382 sec
+parent and level  pushpull trial:  3 threads:  1 src: 0     6.0723 sec
+parent and level  pushpull trial:  4 threads:  1 src: 0     6.1058 sec
+parent and level  pushpull trial:  5 threads:  1 src: 0     6.1361 sec
+parent and level  pushpull trial:  6 threads:  1 src: 0     6.0531 sec
+parent and level  pushpull trial:  7 threads:  1 src: 0     6.1237 sec
+parent and level  pushpull trial:  8 threads:  1 src: 0     6.0613 sec
+parent and level  pushpull trial:  9 threads:  1 src: 0     6.0787 sec
+Avg: BFS pushpull parent only  threads   1:   6.181562 sec: /Users/peng599/local/data/com-LiveJournal/com-LiveJournal.mtx
