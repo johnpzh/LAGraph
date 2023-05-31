@@ -451,6 +451,10 @@ static int readmask          // returns 0 if successful, -1 if failure
 int main (int argc, char **argv)
 {
 
+  if (argc != 3) {
+    fprintf(stderr, "Usage: %s <input.mtx> <mask.mtx>\n", argv[0]);
+    exit(EXIT_FAILURE);
+  }
   //--------------------------------------------------------------------------
   // initialize LAGraph and GraphBLAS
   //--------------------------------------------------------------------------
@@ -461,7 +465,8 @@ int main (int argc, char **argv)
   LAGraph_Graph G = NULL ;
 
   // start GraphBLAS and LAGraph
-  bool burble = false ;
+//  bool burble = false ;
+  bool burble = true ;
   demo_init (burble) ;
 
   int ntrials = 3 ;
@@ -543,7 +548,7 @@ int main (int argc, char **argv)
   int presort = 0;
 //  print_method (stdout, 0, presort) ;
 
-  {
+  {// No mask
 //    GrB_Matrix C = NULL;
     // warmup method:
     // LAGr_TriangleCount_Sandia_ULT: sum (sum ((U * L') .* U))
@@ -560,21 +565,21 @@ int main (int argc, char **argv)
 //    LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE, stdout, msg));
   }
 
-  {
-//    GrB_Matrix C = NULL;
-//    LAGr_MaskedSpGEMM_Method method = LAGr_MaskedSpGEMM_AllZeroMask;
-    LAGr_MaskedSpGEMM_Method method = LAGr_MaskedSpGEMM_UseMask;
-    print_method(stdout, method, presort);
-    LAGRAPH_TRY (LAGr_MaskedSpGEMM_print_matrix(G, M, &method, msg));
-//  LAGRAPH_TRY (LAGr_MaskedSpGEMM (&ntriangles, G, M, &method, msg)) ;
-//  printf ("# of triangles: %" PRIu64 "\n", ntriangles) ;
+//  {// Use mask
+////    GrB_Matrix C = NULL;
+////    LAGr_MaskedSpGEMM_Method method = LAGr_MaskedSpGEMM_AllZeroMask;
+//    LAGr_MaskedSpGEMM_Method method = LAGr_MaskedSpGEMM_UseMask;
 //    print_method(stdout, method, presort);
-//    ttot = LAGraph_WallClockTime() - ttot;
-//    printf("nthreads: %3d time: %12.6f rate: %6.2f (NoMask, one trial)\n",
-//           nthreads_max, ttot, 1e-6 * nvals / ttot);
-
-//    LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE, stdout, msg));
-  }
+//    LAGRAPH_TRY (LAGr_MaskedSpGEMM_print_matrix(G, M, &method, msg));
+////  LAGRAPH_TRY (LAGr_MaskedSpGEMM (&ntriangles, G, M, &method, msg)) ;
+////  printf ("# of triangles: %" PRIu64 "\n", ntriangles) ;
+////    print_method(stdout, method, presort);
+////    ttot = LAGraph_WallClockTime() - ttot;
+////    printf("nthreads: %3d time: %12.6f rate: %6.2f (NoMask, one trial)\n",
+////           nthreads_max, ttot, 1e-6 * nvals / ttot);
+//
+////    LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE, stdout, msg));
+//  }
 #if 0
   if (ntriangles != ntsimple)
     {

@@ -62,6 +62,10 @@
 
 #include "LG_internal.h"
 
+///// Added by Zhen Peng on 4/27/2023
+///// Try to get the definition of struct GB_Descriptor_opaque
+//#include "/Users/peng599/pppp/CLion/GraphBLAS/Source/GB_opaque.h"
+
 //------------------------------------------------------------------------------
 // Added by Zhen Peng 12/5/2022
 // get_matrix_trace: return the matrix's trace.
@@ -334,83 +338,49 @@ int LAGr_MaskedSpGEMM
 //  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 1);
 //  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
 //  GxB_Desc_set(GrB_DESC_S, GxB_SORT, 0);
-  GxB_Desc_set(GrB_DESC_S, GxB_SORT, 1);
+//  GxB_Desc_set(GrB_DESC_S, GxB_SORT, 1);
+//  GxB_set(GrB_DESC_S, GxB_SORT, 1);
+  GrB_Descriptor DESC_FOR_SORT;
+  GrB_Descriptor_new(&DESC_FOR_SORT);
+  GxB_set(DESC_FOR_SORT, GxB_SORT, 17);  // sort the multiplication
+//  GxB_set(DESC_FOR_SORT, GxB_SORT, 0);  // lazy sort
+
 
   switch (method)
   {
-//    case LAGr_MaskedSpGEMM_NoMask:  // 7: sum (sum ((A^2) .* A)) / 6, no masking, elementwise multiplication
-//
-//    GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
-//      GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_TIMES_INT64, C, A, NULL)) ;
-////            GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_BAND_INT64, C, A, NULL)) ; // Wrong answers! Not sure why.
-////            ntri = get_matrix_trace(&L, &U, C, msg);
-//      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
-//      ntri /= 6 ;
-//      break ;
-
     case LAGr_MaskedSpGEMM_NoMask:  // 1: Use no mask
 
-      GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
-      GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_TIMES_FP64, C, Mask, NULL)) ;
-//      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
-//      ntri /= 6 ;
+//      GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
+      GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, DESC_FOR_SORT)) ;
+//      GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_TIMES_FP64, C, Mask, NULL)) ;
       break ;
 
     case LAGr_MaskedSpGEMM_AllZeroMask: // 2: Read a mask from files
 
-//    LG_TRY (tricount_prep (&L, &U, A, msg)) ;
-//      GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
-      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
-//      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
-//      ntri /= 2 ;
+//      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
+      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, DESC_FOR_SORT)) ;
       break ;
 
     case LAGr_MaskedSpGEMM_UseMask: // 3: Currently uses the input matrix A as the mask
 
-      // using the masked saxpy3 method
-//      LG_TRY (tricount_prep (&L, NULL, A, msg)) ;
-      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
 //      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
-//      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
+      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, DESC_FOR_SORT)) ;
       break ;
 
-//    case LAGr_TriangleCount_Sandia_UU: // 4: sum (sum ((U * U) .* U))
-//
-//      // using the masked saxpy3 method
-//    LG_TRY (tricount_prep (NULL, &U, A, msg)) ;
-//      GRB_TRY (GrB_mxm (C, U, NULL, semiring, U, U, GrB_DESC_S)) ;
-//      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
-//      break ;
-//
-//    default:
-//    case LAGr_TriangleCount_Sandia_LUT: // 5: sum (sum ((L * U') .* L))
-//
-//      // This tends to be the fastest method for most large matrices, but
-//      // the Sandia_ULT method is also very fast.
-//
-//      // using the masked dot product
-//    LG_TRY (tricount_prep (&L, &U, A, msg)) ;
-//      GRB_TRY (GrB_mxm (C, L, NULL, semiring, L, U, GrB_DESC_ST1)) ;
-//      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
-//      break ;
-//
-//    case LAGr_TriangleCount_Sandia_ULT: // 6: sum (sum ((U * L') .* U))
-//
-//      // using the masked dot product
-//    LG_TRY (tricount_prep (&L, &U, A, msg)) ;
-//      GRB_TRY (GrB_mxm (C, U, NULL, semiring, U, L, GrB_DESC_ST1)) ;
-//      GRB_TRY (GrB_reduce (&ntri, NULL, monoid, C, NULL)) ;
-//      break ;
   }
 
   //--------------------------------------------------------------------------
   // return result
   //--------------------------------------------------------------------------
 
+//  LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, stdout, msg));
+
   LG_FREE_ALL ;
   if (p_method != NULL) (*p_method) = method ;
 //  if (p_presort != NULL) (*p_presort) = presort ;
   (*ntriangles) = (uint64_t) ntri ;
+  /// Added by Zhen Peng on 4/27/2023
+  GrB_Descriptor_free(&DESC_FOR_SORT);
   return (GrB_SUCCESS) ;
 }
 
@@ -498,20 +468,54 @@ int LAGr_MaskedSpGEMM_print_matrix
         GrB_Desc_Value val // value to change it to:: 0
       ) ;
    */
-  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
+//  GrB_Descriptor_set(GrB_DESC_S, GxB_SORT, 0);
+//  GxB_set(GrB_DESC_S, GxB_SORT, 27);
+  GxB_Desc_set(GrB_DESC_S, GxB_SORT, 27);
+  {// test
+    int sort_set = -1;
+//    GxB_get(GrB_DESC_S, GxB_SORT, &sort_set);
+    GxB_Desc_get(GrB_DESC_S, GxB_SORT, &sort_set);
+    fprintf(stderr, "[! before GrB_DESC_S GxB_SORT: %d ]\n", sort_set);
+  }
+//  {//test
+//    int other_set = 17;
+//    GxB_get(GrB_DESC_S, GrB_STRUCTURE, &other_set);
+//    fprintf(stderr, " [! before GrB_DESC_S GrB_STRUCTURE: %d ]\n", other_set);
+//    GxB_set(GrB_DESC_S, GrB_STRUCTURE, 27);
+//    GxB_get(GrB_DESC_S, GrB_STRUCTURE, &other_set);
+//    fprintf(stderr, " [! chaged GrB_DESC_S GrB_STRUCTURE: %d ]\n", other_set);
+//  }
+//  GrB_Descriptor DESC_FOR_SORT = GrB_DESC_S;
+//  GrB_Descriptor DESC_FOR_SORT = (GrB_Descriptor) malloc(sizeof(struct GB_Descriptor_opaque));
+//  GrB_Descriptor DESC_FOR_SORT = GrB_Descriptor_new(GrB_DESC_S);
+//  GrB_Descriptor DESC_FOR_SORT = GrB_Descriptor_new(GrB_DESC_T1);
+  GrB_Descriptor DESC_FOR_SORT;
+  GrB_Descriptor_new(&DESC_FOR_SORT);
+//  *DESC_FOR_SORT = *GrB_DESC_S;
+//  DESC_FOR_SORT->magic = 1;
+//  GxB_Desc_set(DESC_FOR_SORT, GxB_SORT, 17);
+  GxB_set(DESC_FOR_SORT, GxB_SORT, 17);
+//  GxB_set(DESC_FOR_SORT, GxB_SORT, 0);
+  {// test
+    int sort_set = -1;
+    GxB_get(DESC_FOR_SORT, GxB_SORT, &sort_set);
+    fprintf(stderr, "[! before DESC_FOR_SORT GxB_SORT: %d ]\n", sort_set);
+  }
 
   switch (method)
   {
 
     case LAGr_MaskedSpGEMM_NoMask:  // 1: Use no mask
 
-      GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
-      GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_TIMES_FP64, C, Mask, NULL)) ;
+//      GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, GrB_DESC_S)) ;
+      GRB_TRY (GrB_mxm (C, NULL, NULL, semiring, A, A, DESC_FOR_SORT)) ;
+//      GRB_TRY (GrB_eWiseMult(C, NULL, NULL, GrB_TIMES_FP64, C, Mask, NULL)) ;
 
 //      printf("#### Output C ####\n");
 //      LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, stdout, msg));
       {
         char filename[] = "output.LAGr_MaskedSpGEMM_NoMask.txt";
+        printf("[ Writing to %s ... ]\n", filename);
         FILE *fout = fopen(filename, "w");
         if (!fout) {
           fprintf(stderr, "Error %s:%d: cannot create file %s .\n", __FILE__, __LINE__, filename);
@@ -524,12 +528,14 @@ int LAGr_MaskedSpGEMM_print_matrix
 
     case LAGr_MaskedSpGEMM_AllZeroMask: // 2: Read a mask from files
 
-      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
+//      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
+      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, DESC_FOR_SORT)) ;
 
 //      printf("#### Output C ####\n");
 //      LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, stdout, msg));
       {
         char filename[] = "output.LAGr_MaskedSpGEMM_AllZeroMask.txt";
+        printf("[ Writing to %s ... ]\n", filename);
         FILE *fout = fopen(filename, "w");
         if (!fout) {
           fprintf(stderr, "Error %s:%d: cannot create file %s .\n", __FILE__, __LINE__, filename);
@@ -542,12 +548,14 @@ int LAGr_MaskedSpGEMM_print_matrix
 
     case LAGr_MaskedSpGEMM_UseMask: // 3: Currently uses the input matrix A as the mask
 
-      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
+//      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, GrB_DESC_S)) ;
+      GRB_TRY (GrB_mxm (C, Mask, NULL, semiring, A, A, DESC_FOR_SORT)) ;
 
 //      printf("#### Output C ####\n");
 //      LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_SHORT, stdout, msg));
       {
         char filename[] = "output.LAGr_MaskedSpGEMM_UseMask.txt";
+        printf("[ Writing to %s ... ]\n", filename);
         FILE *fout = fopen(filename, "w");
         if (!fout) {
           fprintf(stderr, "Error %s:%d: cannot create file %s .\n", __FILE__, __LINE__, filename);
@@ -559,6 +567,17 @@ int LAGr_MaskedSpGEMM_print_matrix
       break ;
 
   }
+  {// test
+    int sort_set = -1;
+    GxB_get(GrB_DESC_S, GxB_SORT, &sort_set);
+    fprintf(stderr, "[! after GrB_DESC_S GxB_SORT: %d ]\n", sort_set);
+  }
+  {// test
+    int sort_set = -1;
+    GxB_get(DESC_FOR_SORT, GxB_SORT, &sort_set);
+    fprintf(stderr, "[! after DESC_FOR_SORT GxB_SORT: %d ]\n", sort_set);
+  }
+
 
 //  printf("#### Output C ####\n");
 //  LAGRAPH_TRY (LAGraph_Matrix_Print(C, LAGraph_COMPLETE_VERBOSE, stdout, msg));
@@ -568,6 +587,11 @@ int LAGr_MaskedSpGEMM_print_matrix
   //--------------------------------------------------------------------------
 
   LG_FREE_ALL ;
+
+  /// Add by Zhen Peng on 4/27/2023
+//  free(DESC_FOR_SORT);
+  GrB_Descriptor_free(&DESC_FOR_SORT);
+  /// End add
   if (p_method != NULL) (*p_method) = method ;
 //  if (p_presort != NULL) (*p_presort) = presort ;
 //  (*ntriangles) = (uint64_t) ntri ;

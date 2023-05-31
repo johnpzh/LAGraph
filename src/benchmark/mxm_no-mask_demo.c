@@ -462,11 +462,12 @@ int main (int argc, char **argv)
 
   // start GraphBLAS and LAGraph
   bool burble = false ;
+//  bool burble = true ;
   demo_init (burble) ;
 
 //  int ntrials = 3 ;
   int ntrials = 10 ;
-  // ntrials = 1 ;        // HACK
+//  int ntrials = 1 ;        // HACK
   printf ("# of trials: %d\n", ntrials) ;
 
   int nt = NTHREAD_LIST ;
