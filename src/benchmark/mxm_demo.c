@@ -464,8 +464,8 @@ int main (int argc, char **argv)
   bool burble = false ;
   demo_init (burble) ;
 
-//  int ntrials = 3 ;
-  int ntrials = 10 ;
+  int ntrials = 4 ;
+//  int ntrials = 10 ;
   // ntrials = 1 ;        // HACK
   printf ("# of trials: %d\n", ntrials) ;
 

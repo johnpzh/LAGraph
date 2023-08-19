@@ -119,7 +119,8 @@ int main (int argc, char **argv)
 
     /// Changed by Zhen Peng on 01/03/2023
 //    ntrials = 1;
-    ntrials = 10;
+//    ntrials = 10;
+    ntrials = 4;
 
     // HACK
     // ntrials = 4 ;
