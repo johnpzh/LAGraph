@@ -104,7 +104,8 @@ int main (int argc, char **argv)
   bool burble = false ;
   demo_init (burble) ;
 
-  int ntrials = 10 ;
+  int ntrials = 4 ;
+//  int ntrials = 10 ;
   // ntrials = 1 ;        // HACK
   printf ("# of trials: %d\n", ntrials) ;
 
@@ -112,10 +113,10 @@ int main (int argc, char **argv)
   int Nthreads [20] = { 0, THREAD_LIST } ;
 
   /// Changed by Zhen Peng on 01/03/2022
-    int nthreads_max, nthreads_outer, nthreads_inner ;
-    LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
-    nthreads_max = nthreads_outer * nthreads_inner ;
-//  int nthreads_max = 1;
+//    int nthreads_max, nthreads_outer, nthreads_inner ;
+//    LAGRAPH_TRY (LAGraph_GetNumThreads (&nthreads_outer, &nthreads_inner, msg)) ;
+//    nthreads_max = nthreads_outer * nthreads_inner ;
+  int nthreads_max = 1;
   if (Nthreads [1] == 0)
   {
     // create thread list automatically
