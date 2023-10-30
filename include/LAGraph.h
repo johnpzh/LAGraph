@@ -2526,8 +2526,30 @@ int LAGr_TriangleCount_with_LU
         char *msg
     ) ;
 
-/// Added by Zhen Peng on 12/28/2022
 
+/// Added by Zhen Peng on 10/24/2023
+typedef enum
+{
+  LAGr_Eltwise_NoMask = 0,  /// Elementwise Multiplication without masking
+  LAGr_Eltwise_UseMask = 1  /// Elementwise Multiplication with masking
+}
+LAGr_Eltwise_Method ;
+
+LAGRAPH_PUBLIC
+int LAGr_Eltwise
+(
+    // output:
+    uint64_t *ntriangles,
+    // input:
+    const LAGraph_Graph G1,
+    const LAGraph_Graph G2,
+//        const LAGraph_Graph M, // Mask
+    LAGr_Eltwise_Method *p_method,
+    char *msg
+) ;
+
+
+/// Added by Zhen Peng on 12/28/2022
 typedef enum
 {
   LAGr_MaskedSpGEMM_AutoMethod = 0,  ///< auto selection of method
@@ -2535,25 +2557,25 @@ typedef enum
   LAGr_MaskedSpGEMM_AllZeroMask = 2,       ///< sum (sum ((L * U) .* A)) / 2
   LAGr_MaskedSpGEMM_UseMask = 3,   ///< sum (sum ((L * L) .* L))
 }
-    LAGr_MaskedSpGEMM_Method ;
+LAGr_MaskedSpGEMM_Method ;
 
 LAGRAPH_PUBLIC
 int LAGr_MaskedSpGEMM
 (
-        // output:
-        uint64_t *ntriangles,
-        // input:
-        const LAGraph_Graph G,
-        const LAGraph_Graph M, // Mask
-        LAGr_MaskedSpGEMM_Method *method,
+    // output:
+    uint64_t *ntriangles,
+    // input:
+    const LAGraph_Graph G,
+    const LAGraph_Graph M, // Mask
+    LAGr_MaskedSpGEMM_Method *method,
 //    LAGr_TriangleCount_Presort *presort,
-        char *msg
+    char *msg
 ) ;
 
 
 LAGRAPH_PUBLIC
 int LAGr_MaskedSpGEMM_print_matrix
-    (
+(
 //        // output:
 //        GrB_Matrix C,
     // input:
